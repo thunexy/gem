@@ -1,5 +1,6 @@
 import React, {useEffect, useState} from 'react';
 import {View, StyleSheet, Platform, StatusBar, Dimensions} from 'react-native';
+import {useSelector} from 'react-redux';
 
 const X_WIDTH = 375;
 const X_HEIGHT = 812;
@@ -22,12 +23,21 @@ export const StatusBarHeight = Platform.select({
 });
 
 export default function StatusBarBackground({style}) {
+  const auth = useSelector(state => state.authentication);
   return (
     <View
-      style={styles.statusBarBackground(style?.backgroundColor || '#FAF1EA')}>
+      style={styles.statusBarBackground(
+        auth?.isFirstTime ? '#6939FF' : style?.backgroundColor || '#FAF1EA',
+      )}>
       <StatusBar
-        backgroundColor={style?.backgroundColor || '#FAF1EA'}
-        barStyle={style?.barStyle || 'dark-content'}
+        backgroundColor={
+          auth?.isFirstTime ? '#6939FF' : style?.backgroundColor || '#FAF1EA'
+        }
+        barStyle={
+          auth?.isFirstTime
+            ? 'light-content'
+            : style?.barStyle || 'dark-content'
+        }
       />
     </View>
   );

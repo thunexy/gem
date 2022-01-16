@@ -10,6 +10,7 @@ import {
   UPDATE_PROFILE,
   CAN_USE_BIOMETRICS,
   RESET_PIN,
+  REMOVE_FIRST_TIME,
 } from '../actions/types';
 const initialState = {
   access_token: '',
@@ -17,6 +18,7 @@ const initialState = {
   canUseFingerprint: null,
   canUseFaceId: null,
   pin: null,
+  isFirstTime: true,
 };
 
 /**
@@ -30,6 +32,7 @@ export default (state = initialState, action) => {
         ...state,
         ...others,
         token: token?.access_token,
+        isFirstTime: false,
       };
     case PARTIAL_SIGN_IN:
       return {
@@ -84,7 +87,7 @@ export default (state = initialState, action) => {
       return {
         ...state,
         pin: null,
-      }
+      };
     case CAN_USE_BIOMETRICS:
       return {
         ...state,
@@ -93,6 +96,11 @@ export default (state = initialState, action) => {
         pin: action.pin,
         isLoggedIn: true,
       };
+    case REMOVE_FIRST_TIME:
+      return {
+        ...state,
+        isFirstTime: false,
+      };
     case LOGOUT:
       return {
         ...initialState,
@@ -100,6 +108,7 @@ export default (state = initialState, action) => {
         canUseFingerprint: state.canUseFingerprint,
         pin: state.pin,
         email_address: state.customer?.email_address,
+        isFirstTime: false,
       };
     default:
       return state;

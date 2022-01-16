@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useContext, useEffect} from 'react';
 import {Image, ScrollView, Text, View} from 'react-native';
 import {useDispatch} from 'react-redux';
 import {footer, welcome} from '../../../assets/styles/styles';
@@ -15,6 +15,7 @@ export default function Welcome() {
     cDispatch({step: 1});
     dispatch(partialSignin());
   };
+
   return (
     <View style={{flex: 1}}>
       <View style={welcome.container}>

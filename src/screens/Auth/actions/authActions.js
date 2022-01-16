@@ -10,6 +10,7 @@ import {
   UPDATE_PROFILE,
   CAN_USE_BIOMETRICS,
   RESET_PIN,
+  REMOVE_FIRST_TIME,
 } from './types';
 
 export const signUpUserSuccess = data => {
@@ -70,3 +71,6 @@ export const updatePercent = data => dispatch =>
     type: UPDATE_PERCENT,
     data,
   });
+
+export const removeFistTime = () => dispatch =>
+  dispatch({type: REMOVE_FIRST_TIME});

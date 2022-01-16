@@ -12,6 +12,8 @@ import Otp from '../screens/Auth/Otp';
 import OtpEmail from '../screens/Auth/OtpEmail';
 import Welcome from '../screens/Auth/Welcome';
 import PinLogin from '../screens/Auth/PinLogin';
+import Intro from '../screens/Auth/Intro';
+import {useSelector} from 'react-redux';
 
 const pageTransition = Platform.select({
   ios: CardStyleInterpolators.forHorizontalIOS,
@@ -21,9 +23,10 @@ const pageTransition = Platform.select({
 const AuthStack = createStackNavigator();
 // FIXME: VerifyTokenPhoneNumber, VerifyPhoneNumber, PinSelection are supposed to be in a Switch Navigator, but that no longer exists, so rethink navigators for those
 export default function Auth(props) {
+  const auth = useSelector(state => state.authentication);
   return (
     <AuthStack.Navigator
-      initialRouteName="Login"
+      initialRouteName={auth?.isFirstTime ? 'Intro' : 'Login'}
       screenOptions={{
         gestureEnabled: true,
         gestureDirection: 'horizontal',
@@ -45,6 +48,11 @@ export default function Auth(props) {
         initialParams={{backgroundColor: '#0E81FF'}}
         name="Welcome"
         component={Welcome}
+      />
+      <AuthStack.Screen
+        initialParams={{backgroundColor: '#6939FF'}}
+        name="Intro"
+        component={Intro}
       />
     </AuthStack.Navigator>
   );
