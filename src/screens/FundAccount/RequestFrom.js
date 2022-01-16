@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  ActivityIndicator,
+  Image,
+  ScrollView,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import Toast from 'react-native-simple-toast';
 import validator from 'validator';
 import {footer, onboarding, text} from '../../../assets/styles/styles';
@@ -25,9 +32,11 @@ export default function RequestFrom({navigation, route}) {
   const [displayModal, setDisplayModal] = useState(false);
   const [confirmRequest, setConfirmRequest] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [resolving, setResolve] = useState(false);
   const [exists, setExistence] = useState(null);
 
   const resolveCustomer = () => {
+    setResolve(true);
     apiRequest(resolveCustomerUrl, 'post', {
       identifier: state.email_address,
     })
@@ -38,6 +47,9 @@ export default function RequestFrom({navigation, route}) {
       .catch(e => {
         Toast.show(e.response.data.message, Toast.LONG);
         setExistence(false);
+      })
+      .finally(() => {
+        setResolve(false);
       });
   };
   const handleRequest = () => {
@@ -90,6 +102,9 @@ export default function RequestFrom({navigation, route}) {
                 placeHolder="E.g; name@gmail.com"
                 value={state.email_address}
                 keyboardType="email-address"
+                suffix={
+                  resolving ? <ActivityIndicator color={'#6939FF'} /> : null
+                }
                 onChangeText={email_address => {
                   setState(prev => ({...prev, email_address}));
                   setExistence(null);

@@ -104,10 +104,10 @@ export default function HowTo({navigation, route}) {
                     name === 'GenPay' ? (
                       <PayWithFlutterwave
                         options={{
-                          tx_ref: ref,
+                          tx_ref: ref ?? '',
                           authorization:
                             'FLWPUBK_TEST-128ea9d7c4d397252855a2cd33bb3943-X',
-                          amount: amount,
+                          amount: +amount,
                           currency: 'USD',
                           customer: {
                             email: auth.customer?.email_address,

@@ -24,6 +24,7 @@ const Input = React.forwardRef(
       maxLength,
       small,
       prefix,
+      suffix,
       onSubmitEditing = () => {},
       onBlur = () => {},
     },
@@ -64,7 +65,10 @@ const Input = React.forwardRef(
               },
             ]}
           />
-
+          <View
+            style={{position: 'absolute', bottom: scale(14), right: scale(12)}}>
+            {suffix || null}
+          </View>
           <View
             style={{
               ...style?.[showError ? 'lineError' : 'line'],
