@@ -1,0 +1,11 @@
+export const USER_SIGN_UP_SUCCESS = 'USER_SIGN_UP_SUCCESS';
+export const PARTIAL_SIGN_IN = 'PARTIAL_SIGN_IN';
+export const LOGOUT = 'LOGOUT';
+export const SAVE_PIN = 'SAVE_PIN';
+export const CAN_USE_FINGER_PRINT = 'CAN_USE_FINGER_PRINT';
+export const CAN_USE_FACE_ID = 'CAN_USE_FACE_ID';
+export const UPDATE_STEP = 'UPDATE_STEP';
+export const UPDATE_PERCENT = 'UPDATE_PERCENT';
+export const UPDATE_PROFILE = 'UPDATE_PROFILE';
+export const CAN_USE_BIOMETRICS = 'CAN_USE_BIOMETRICS';
+export const RESET_PIN = 'RESET_PIN';
