@@ -38,7 +38,7 @@ export function Dashboard({navigation}) {
   useEffect(() => {
     apiRequest(wireTransferUrl, 'get')
       .then(res => {
-        cDispatch({account: res.data});
+        cDispatch({account: res.data}); 
       })
       .catch(e => console.log(e.message));
     apiRequest(getUserDetailsUrl, 'get')
