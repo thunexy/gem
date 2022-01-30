@@ -24,9 +24,11 @@ import {DoubleArrowBack} from '../../../assets/svgs/doubleArrowBack';
 import {Complete} from '../../../assets/svgs/complete';
 import {Info} from '../../../assets/svgs/info';
 import {Share} from '../../../assets/svgs/share';
-import { Avatar, Gen, NonGen } from '../../../assets/svgs/gen';
-import { FaceId } from '../../../assets/svgs/faceId';
-import { Fingerprint } from '../../../assets/svgs/fingerprint';
+import {Avatar, Gen, NonGen} from '../../../assets/svgs/gen';
+import {FaceId} from '../../../assets/svgs/faceId';
+import {Fingerprint} from '../../../assets/svgs/fingerprint';
+import {Search} from '../../../assets/svgs/search';
+import {Location} from '../../../assets/svgs/location';
 
 const components = {
   logo: LogoSVG,
@@ -59,6 +61,8 @@ const components = {
   avatar: Avatar,
   faceId: FaceId,
   fingerprint: Fingerprint,
+  search: Search,
+  location: Location,
 };
 
 export const IconGen = props => {
