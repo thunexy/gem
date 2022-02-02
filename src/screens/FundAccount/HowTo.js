@@ -14,10 +14,10 @@ import {PaymentItem} from '../Dashboard/OpenBalance/components/BalanceItem';
 
 export default function HowTo({navigation, route}) {
   const {amount, sender} = route.params;
-  console.log(route.params);
   const auth = useSelector(state => state.authentication);
   const [ref, setRef] = useState(null);
-  const [displayModal, setDisplayModal] = useState(false);
+  const [ displayModal, setDisplayModal ] = useState(false);
+  const [displayACH, setDisplayACH] = useState(false)
   const [loading, setLoading] = useState(false);
   const getUSDBalance = () => {
     return auth.balances?.find(item => item.currency === 'USD')
@@ -61,6 +61,14 @@ export default function HowTo({navigation, route}) {
         'Fund your account with domestic ACH or international wire transfers',
       onPress() {
         navigation.navigate('WireTransfer', {...route.params});
+      },
+    },
+    {
+      name: 'Bank Debit (ACH)',
+      description:
+        'Connect your bank account with Gen. The money should be in your Gen account in 3 hours.',
+      onPress() {
+        setDisplayACH(true);
       },
     },
   ];

@@ -24,41 +24,61 @@ import {DoubleArrowBack} from '../../../assets/svgs/doubleArrowBack';
 import {Complete} from '../../../assets/svgs/complete';
 import {Info} from '../../../assets/svgs/info';
 import {Share} from '../../../assets/svgs/share';
-import { Avatar, Gen, NonGen } from '../../../assets/svgs/gen';
-import { FaceId } from '../../../assets/svgs/faceId';
-import { Fingerprint } from '../../../assets/svgs/fingerprint';
+import {Avatar, Gen, NonGen} from '../../../assets/svgs/gen';
+import {FaceId} from '../../../assets/svgs/faceId';
+import {Fingerprint} from '../../../assets/svgs/fingerprint';
+import {Home} from '../../../assets/svgs/home';
+import {Activity} from '../../../assets/svgs/activity';
+import {AddMoney} from '../../../assets/svgs/addMoney';
+import {Accounts} from '../../../assets/svgs/accounts';
+import {Profile} from '../../../assets/svgs/profile';
+import {Transfer} from '../../../assets/svgs/transfer';
+import {Request} from '../../../assets/svgs/request';
+import {Beneficiaries} from '../../../assets/svgs/beneficiaries';
+import {Debit} from '../../../assets/svgs/debit';
+import {Credit} from '../../../assets/svgs/credit';
 
 const components = {
-  logo: LogoSVG,
-  check: CheckSVG,
-  arrowRight: ArrowRightSVG,
-  close: CloseSVG,
-  ChevronRight,
-  error: ErrorSVG,
-  notification: Notification,
+  activity: Activity,
+  accounts: Accounts,
   add: Add,
-  calendar: CalendarSVG,
-  cancel: CancelSVG,
+  addMoney: AddMoney,
   arrowLeft: ArrowLeftSVG,
-  logout: Logout,
-  off: Off,
-  on: On,
-  ChevronLeft,
-  upload: Upload,
-  smiley: Smiley,
-  user: User,
-  download: Download,
-  clear: Clear,
-  lock: Lock,
-  doubleArrowBack: DoubleArrowBack,
-  complete: Complete,
-  info: Info,
-  share: Share,
-  gen: Gen,
-  nonGen: NonGen,
+  arrowRight: ArrowRightSVG,
   avatar: Avatar,
+  beneficiary: Beneficiaries,
+  cancel: CancelSVG,
+  calendar: CalendarSVG,
+  check: CheckSVG,
+  ChevronLeft,
+  ChevronRight,
+  clear: Clear,
+  close: CloseSVG,
+  complete: Complete,
+  credit: Credit,
+  debit: Debit,
+  doubleArrowBack: DoubleArrowBack,
+  download: Download,
+  error: ErrorSVG,
   faceId: FaceId,
   fingerprint: Fingerprint,
+  gen: Gen,
+  home: Home,
+  info: Info,
+  logo: LogoSVG,
+  lock: Lock,
+  logout: Logout,
+  nonGen: NonGen,
+  notification: Notification,
+  off: Off,
+  on: On,
+  profile: Profile,
+  request: Request,
+  share: Share,
+  smiley: Smiley,
+  transfer: Transfer,
+  upload: Upload,
+  user: User,
 };
 
 export const IconGen = props => {

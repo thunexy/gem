@@ -1,9 +1,22 @@
 import React, {useContext, useEffect} from 'react';
-import {Image, ScrollView, Text, TouchableOpacity, View} from 'react-native';
+import {
+  Image,
+  ScrollView,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import {useDispatch, useSelector} from 'react-redux';
-import {dashboard} from '../../../assets/styles/styles';
+import {
+  dashboard,
+  onboarding as onboard,
+  text,
+} from '../../../assets/styles/styles';
 import Button from '../../components/Button/Button';
 import {IconGen} from '../../components/IconGenerator/IconGenerator';
+import QuickActions from '../../components/QuickActions/QuickActions';
+import WalletCard from '../../components/WalletCard/WalletCard';
 import {AppContext} from '../../controllers/AppContext';
 import {apiRequest} from '../../lib/api/api';
 import {
@@ -11,9 +24,12 @@ import {
   getUserDetailsUrl,
   wireTransferUrl,
 } from '../../lib/api/url';
+import {moderateScale, scale} from '../../lib/utils/scaleUtils';
 import {resetCache, updateProfile} from '../Auth/actions/authActions';
 export function Dashboard({navigation}) {
-  const {onboarding, customer} = useSelector(state => state.authentication);
+  const {onboarding, customer, kycs, ...others} = useSelector(
+    state => state.authentication,
+  );
   const dispatch = useDispatch();
   const {dispatch: cDispatch, fundRequests} = useContext(AppContext);
   const {steps, percent_completed} = onboarding || {};
@@ -38,7 +54,7 @@ export function Dashboard({navigation}) {
   useEffect(() => {
     apiRequest(wireTransferUrl, 'get')
       .then(res => {
-        cDispatch({account: res.data}); 
+        cDispatch({account: res.data});
       })
       .catch(e => console.log(e.message));
     apiRequest(getUserDetailsUrl, 'get')
@@ -54,23 +70,49 @@ export function Dashboard({navigation}) {
       .catch(e => {});
   }, []);
   return (
-    <View style={container}>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={header}>
-          <Text style={greetings} numberOfLines={1} ellipsizeMode="tail">
-            Hi, {customer?.first_name}
-          </Text>
-          <View style={actions}>
-            <TouchableOpacity
-              disabled={!fundRequests.length}
-              onPress={() => {
-                navigation.navigate('FundingRequest');
-              }}>
-              <IconGen
-                tag="notification"
-                color={fundRequests.length ? '#0E093F' : '#ddd'}
-              />
-            </TouchableOpacity>
+    <View
+      style={[
+        container,
+        {
+          backgroundColor: '#FFFFFF',
+          paddingHorizontal: scale(0),
+        },
+      ]}>
+      <View
+        style={[
+          header,
+          {
+            paddingHorizontal: scale(24),
+            backgroundColor: !kycs?.[0]?.kyc_completed ? '#fff' : '#CFBEFF',
+          },
+        ]}>
+        <Text style={greetings} numberOfLines={1} ellipsizeMode="tail">
+          Hi, {customer?.first_name}
+        </Text>
+        <View
+          style={[
+            actions,
+            {
+              justifyContent: !kycs?.[0]?.kyc_completed
+                ? 'space-between'
+                : 'flex-end',
+            },
+          ]}>
+          <TouchableOpacity
+            disabled={!fundRequests.length}
+            onPress={() => {
+              navigation.navigate('FundingRequest');
+            }}>
+            <IconGen
+              tag="notification"
+              color={
+                fundRequests.length || kycs?.[0]?.kyc_completed
+                  ? '#0E093F'
+                  : '#ddd'
+              }
+            />
+          </TouchableOpacity>
+          {!kycs?.[0]?.kyc_completed ? (
             <TouchableOpacity
               style={inactiveBtn}
               onPress={() => {
@@ -79,9 +121,11 @@ export function Dashboard({navigation}) {
               <Text style={btnText}>Add Funds</Text>
               <IconGen tag="add" />
             </TouchableOpacity>
-          </View>
+          ) : null}
         </View>
-        <View style={content}>
+      </View>
+      {!kycs?.[0]?.kyc_completed ? (
+        <View style={[content, {marginHorizontal: scale(24)}]}>
           {(percent_completed < 100 || !steps?.pin_set) && (
             <View style={progress}>
               <View style={background}>
@@ -139,8 +183,88 @@ export function Dashboard({navigation}) {
           </Text>
           {/* <Button text="Save & Continue" iconName="arrowRight" info={'1/3'} /> */}
         </View>
+      ) : (
+        <View style={{backgroundColor: '#CFBEFF', flex: 1}}>
+          <View style={{marginHorizontal: scale(24)}}>
+            <WalletCard />
+          </View>
+          <View
+            style={[
+              onboard.inputContainer,
+              {
+                marginTop: scale(24),
+                backgroundColor: '#fff',
+                flex: 1,
+                paddingBottom: 0,
+              },
+            ]}>
+            <ScrollView showsVerticalScrollIndicator={false}>
+              <View
+                style={{flexDirection: 'row', justifyContent: 'space-between'}}>
+                <QuickActions icon={'transfer'} text="Transfer" />
+                <QuickActions icon={'request'} text="Request" />
+                <QuickActions icon={'beneficiary'} text="Beneficiaries" />
+              </View>
+              <View style={s.detailsContainer}>
+                <Text style={s.recent}>Recent Activity</Text>
+                <View style={s.detailsWrapper}>
+                  <Text style={s.date}>TODAY</Text>
+                  <View style={s.textContainer}>
+                    <IconGen tag="debit" />
+                    <View style={s.textWrapper}>
+                      <Text style={s.name} numberOfLines={1}>
+                        Figma LLC, Subscription
+                      </Text>
+                      <Text style={s.status} numberOfLines={1}>
+                        Card • Chidimma Adamu
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={s.debit}>–$22,999</Text>
+                      <Text style={s.superscript}>.99</Text>
+                    </View>
+                  </View>
+                  <View style={s.textContainer}>
+                    <IconGen tag="credit" />
+                    <View style={s.textWrapper}>
+                      <Text style={s.name} numberOfLines={1}>
+                        Figma LLC, Subscription
+                      </Text>
+                      <Text style={s.status} numberOfLines={1}>
+                        Card • Chidimma Adamu
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={s.credit}>–$22,999</Text>
+                      <Text style={s.creditSuperscript}>.99</Text>
+                    </View>
+                  </View>
+                </View>
+                <View style={s.detailsWrapper}>
+                  <Text style={s.date}>TODAY</Text>
+                  <View style={s.textContainer}>
+                    <IconGen tag="debit" />
+                    <View style={s.textWrapper}>
+                      <Text style={s.name} numberOfLines={1}>
+                        Figma LLC, Subscription
+                      </Text>
+                      <Text style={s.status} numberOfLines={1}>
+                        Card • Chidimma Adamu
+                      </Text>
+                    </View>
+                    <View style={{flexDirection: 'row'}}>
+                      <Text style={s.debit}>–$22,999</Text>
+                      <Text style={s.superscript}>.99</Text>
+                    </View>
+                  </View>
+                </View>
+              </View>
+            </ScrollView>
+          </View>
+        </View>
+      )}
 
-        <View>
+      {/* <View>
           <Text
             style={{textAlign: 'center'}}
             onPress={() => {
@@ -148,8 +272,82 @@ export function Dashboard({navigation}) {
             }}>
             Logout
           </Text>
-        </View>
-      </ScrollView>
+        </View> */}
     </View>
   );
 }
+
+const s = StyleSheet.create({
+  recent: {
+    color: '#0E093F',
+    fontFamily: text.helonikBold,
+    fontSize: moderateScale(18),
+    lineHeight: moderateScale(21),
+    marginBottom: scale(12),
+  },
+  detailsContainer: {
+    paddingTop: scale(40),
+    marginTop: scale(24),
+    borderTopColor: '#F4F4F6',
+    borderTopWidth: scale(1),
+  },
+  date: {
+    color: '#0E093F',
+    fontSize: moderateScale(12),
+    lineHeight: moderateScale(14),
+    fontFamily: text.helonik,
+    paddingVertical: scale(12),
+    letterSpacing: scale(0.7),
+  },
+  textContainer: {
+    borderTopColor: '#F4F4F6',
+    borderTopWidth: scale(1),
+    borderBottomWidth: scale(1),
+    borderBottomColor: '#F4F4F6',
+    flexDirection: 'row',
+    paddingVertical: scale(24),
+    alignItems: 'center',
+  },
+  textWrapper: {
+    flex: 1,
+    marginHorizontal: scale(8),
+  },
+  name: {
+    color: '#0E093F',
+    fontFamily: text.helonikBold,
+    fontSize: moderateScale(16),
+    lineHeight: moderateScale(18.8),
+    marginBottom: scale(4),
+  },
+  status: {
+    color: '#87849F',
+    fontSize: moderateScale(14),
+    lineHeight: moderateScale(16),
+    letterSpacing: moderateScale(0.2),
+    fontFamily: text.helonik,
+  },
+  debit: {
+    color: '#F23C3C',
+    fontSize: moderateScale(20),
+    lineHeight: moderateScale(23),
+    fontFamily: text.helonikBold,
+  },
+  superscript: {
+    fontSize: moderateScale(12),
+    color: '#F23C3C',
+    fontFamily: text.helonik,
+    lineHeight: moderateScale(14),
+  },
+  credit: {
+    color: '#000000',
+    fontSize: moderateScale(20),
+    lineHeight: moderateScale(23),
+    fontFamily: text.helonikBold,
+  },
+  creditSuperscript: {
+    fontSize: moderateScale(12),
+    color: '#000000',
+    fontFamily: text.helonik,
+    lineHeight: moderateScale(14),
+  },
+});

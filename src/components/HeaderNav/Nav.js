@@ -33,7 +33,7 @@ export default function Nav({onClose, description, title}) {
             {
               fontSize: moderateScale(24),
               lineHeight: moderateScale(28),
-              fontFamily: text.helonikBold,
+              fontFamily: text.helonik,
             },
           ]}>
           {title}

@@ -1,27 +1,24 @@
-import React, {useContext} from 'react';
 import {
-  createStackNavigator,
   CardStyleInterpolators,
+  createStackNavigator,
 } from '@react-navigation/stack';
+import React from 'react';
 import {Platform} from 'react-native';
 import {Dashboard} from '../screens/Dashboard/Dashboard';
-import Step1 from '../screens/Onboarding/Step1';
-import Step2 from '../screens/Onboarding/Step2';
-import Step3 from '../screens/Onboarding/Step3';
-import ProfileComplete from '../screens/Onboarding/ProfileComplete';
-import {AppContext} from '../controllers/AppContext';
-import {useSelector} from 'react-redux';
 import OpenBalance from '../screens/Dashboard/OpenBalance/OpenBalance';
-import VerifyIdentity from '../screens/Dashboard/OpenBalance/OpenUSD/VerifyIdentity';
-import VerifyAddress from '../screens/Dashboard/OpenBalance/OpenUSD/VerifyAddress';
-import FaceCapture from '../screens/Dashboard/OpenBalance/OpenUSD/FaceCapture';
 import DetailsReady from '../screens/Dashboard/OpenBalance/OpenUSD/DetailsReady';
-import Welcome from '../screens/Auth/Welcome';
+import FaceCapture from '../screens/Dashboard/OpenBalance/OpenUSD/FaceCapture';
+import VerifyAddress from '../screens/Dashboard/OpenBalance/OpenUSD/VerifyAddress';
+import VerifyIdentity from '../screens/Dashboard/OpenBalance/OpenUSD/VerifyIdentity';
+import FundingRequest from '../screens/FundAccount/FundingRequest';
 import HowMuch from '../screens/FundAccount/HowMuch';
 import HowTo from '../screens/FundAccount/HowTo';
 import RequestFrom from '../screens/FundAccount/RequestFrom';
 import WireTransfer from '../screens/FundAccount/WireTransfer';
-import FundingRequest from '../screens/FundAccount/FundingRequest';
+import ProfileComplete from '../screens/Onboarding/ProfileComplete';
+import Step1 from '../screens/Onboarding/Step1';
+import Step2 from '../screens/Onboarding/Step2';
+import Step3 from '../screens/Onboarding/Step3';
 const pageTransition = Platform.select({
   ios: CardStyleInterpolators.forHorizontalIOS,
   android: CardStyleInterpolators.forRevealFromBottomAndroid,

@@ -17,6 +17,7 @@ import {Platform, Text, View} from 'react-native';
 import {handleError} from '../lib/utils/helpers';
 import AuthNavigator from './AuthNavigator';
 import HomeNavigator from './HomeNavigator';
+import DashboardNavigator from './DashboardNavigator';
 // import Alert from '../components/Alert/Alert';
 
 const pageTransition = Platform.select({
@@ -88,8 +89,8 @@ function App(props) {
             headerMode="none">
             {props.auth.isLoggedIn ? (
               <MainStack.Screen
-                name="HomeNavigator"
-                component={HomeNavigator}
+                name="DashboardNavigator"
+                component={DashboardNavigator}
               />
             ) : (
               <MainStack.Screen

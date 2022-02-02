@@ -27,11 +27,11 @@ export default function StatusBarBackground({style}) {
   return (
     <View
       style={styles.statusBarBackground(
-        auth?.isFirstTime ? '#6939FF' : style?.backgroundColor || '#FAF1EA',
+        auth?.isFirstTime ? '#6939FF' : style?.backgroundColor || '#CFBEFF',
       )}>
       <StatusBar
         backgroundColor={
-          auth?.isFirstTime ? '#6939FF' : style?.backgroundColor || '#FAF1EA'
+          auth?.isFirstTime ? '#6939FF' : style?.backgroundColor || '#CFBEFF'
         }
         barStyle={
           auth?.isFirstTime

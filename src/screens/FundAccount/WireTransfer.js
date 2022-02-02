@@ -118,17 +118,25 @@ export default function WireTransfer({navigation, route}) {
                     <View>
                       <Text style={s.headerText}>Beneficiary details</Text>
                       <Text style={s.title}>Account holder name</Text>
-                      <Text style={s.value}>Chidimma Adamu Ayo</Text>
+                      <Text style={s.value}>
+                        {account?.domestic?.account_name}
+                      </Text>
                       <Text style={s.title}>Account number</Text>
-                      <Text style={s.value}>123456789000000</Text>
+                      <Text style={s.value}>
+                        {account?.domestic?.account_number}
+                      </Text>
                       <Text style={s.title}>Account type</Text>
-                      <Text style={s.value}>Checking</Text>
+                      <Text style={s.value}>
+                        {account?.domestic?.account_type}
+                      </Text>
                       <Text style={s.title}>Routing number</Text>
-                      <Text style={s.value}>12345678</Text>
+                      <Text style={s.value}>
+                        {account?.domestic?.ach_rounting_number}
+                      </Text>
                       <Text style={s.title}>Bank name & address</Text>
                       <Text style={s.value}>
-                        {account?.bankName}, 6070 Poplar Ave, Suite 200,
-                        Memphis, TN 38119
+                        {account?.domestic?.bank_name},{' '}
+                        {account?.domestic?.bank_address}
                       </Text>
                     </View>
                   ) : null}
@@ -174,25 +182,28 @@ export default function WireTransfer({navigation, route}) {
                       <Text style={s.headerText}>Receiving bank details</Text>
                       <Text style={s.title}>Swift/BIC code</Text>
                       <Text style={s.value}>
-                        {account?.wire_routing_number}
+                        {account?.international?.wire_routing_number}
                       </Text>
                       <Text style={s.title}>Bank name & address</Text>
                       <Text style={s.value}>
-                        {account?.bank_name}, {account?.bank_address}
+                        {account?.international?.bank_name},{' '}
+                        {account?.international?.bank_address}
                       </Text>
                       <Text style={[s.headerText, {marginTop: scale(0)}]}>
                         Beneficiary details
                       </Text>
                       <Text style={s.title}>IBAN/Account Number</Text>
-                      <Text style={s.value}>{account?.account_number}</Text>
+                      <Text style={s.value}>
+                        {account?.international?.account_number}
+                      </Text>
                       <Text style={s.title}>Beneficiary name & address</Text>
                       <Text style={s.value}>
-                        {account?.account_name},{' '}
-                        {account?.account_owner_address}
+                        {account?.international?.account_name},{' '}
+                        {account?.international?.account_owner_address}
                       </Text>
                       <Text style={s.title}>Account type</Text>
                       <Text style={[s.value, {marginBottom: scale(0)}]}>
-                        {account?.account_type}
+                        {account?.international?.account_type}
                       </Text>
                     </View>
                   ) : null}
