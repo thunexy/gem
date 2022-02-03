@@ -27,7 +27,6 @@ const BottomModal = ({
       setModalClosed();
     }
   }, [isModalOpen]);
-
   const setModalClosed = () => {
     toggleModal(false);
     closeModal(false);

@@ -1,4 +1,5 @@
 export default {
+"usa" : require('../../../assets/images/flags/United-States.png'),
 "algeria": require("../../../assets/images/flags/algeria.png"),
 "angola": require("../../../assets/images/flags/angola.png"),
 "benin": require("../../../assets/images/flags/benin.png"),

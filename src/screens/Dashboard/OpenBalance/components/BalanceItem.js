@@ -8,7 +8,9 @@ export default function BalanceItem({
   country,
   description,
   backgroundColor,
-}) {
+}) 
+{
+  // console.log("I Got Here")
   return (
     <TouchableOpacity onPress={onPress}>
       <View
@@ -35,6 +37,7 @@ export function PaymentItem({
   backgroundColor,
   disable,
 }) {
+
   return (
     <TouchableOpacity onPress={onPress} disabled={disable}>
       <View

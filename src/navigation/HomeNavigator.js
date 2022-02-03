@@ -21,6 +21,9 @@ import Step2 from '../screens/Onboarding/Step2';
 import Step3 from '../screens/Onboarding/Step3';
 import ReceiveAmount from '../screens/Transfer/ReceiveAmount';
 import TransferAmount from '../screens/Transfer/TransferAmount';
+import SelectCountry from '../screens/TestScreen/SelectCountry';
+import Transaction from '../screens/TestScreen/Transaction';
+import Beneficiary from '../screens/TestScreen/Beneficiary';
 const pageTransition = Platform.select({
   ios: CardStyleInterpolators.forHorizontalIOS,
   android: CardStyleInterpolators.forRevealFromBottomAndroid,
@@ -38,11 +41,16 @@ export default function HomeNavigator(props) {
         cardStyleInterpolator: pageTransition,
         headerShown: false,
       }}>
+      <HomeStack.Screen name="SelectCountry" component={SelectCountry} />
+      <HomeStack.Screen name="Transaction" component={Transaction} />
+
+      <HomeStack.Screen name="Beneficiary" component={Beneficiary} />
       <HomeStack.Screen
         name="Dashboard"
         component={Dashboard}
         initialParams={{backgroundColor: '#FFFFFF'}}
       />
+
       <HomeStack.Screen
         name="VerifyIdentity"
         component={VerifyIdentity}

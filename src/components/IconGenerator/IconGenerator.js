@@ -38,6 +38,8 @@ import {Beneficiaries} from '../../../assets/svgs/beneficiaries';
 import {Debit} from '../../../assets/svgs/debit';
 import {Credit} from '../../../assets/svgs/credit';
 import { Edit } from '../../../assets/svgs/edit';
+import {Search} from '../../../assets/svgs/search';
+import {Location} from '../../../assets/svgs/location';
 
 const components = {
   activity: Activity,
@@ -67,8 +69,9 @@ const components = {
   gen: Gen,
   home: Home,
   info: Info,
-  logo: LogoSVG,
+  location: Location,
   lock: Lock,
+  logo: LogoSVG,
   logout: Logout,
   nonGen: NonGen,
   notification: Notification,
@@ -76,6 +79,7 @@ const components = {
   on: On,
   profile: Profile,
   request: Request,
+  search: Search,
   share: Share,
   smiley: Smiley,
   transfer: Transfer,

@@ -167,6 +167,13 @@ export function Dashboard({navigation}) {
             You have no accounts opened yet. Click on the button below to open
             an account
           </Text>
+          <Button onPress ={() =>  {
+            navigation.navigate("Beneficiary")
+          }}
+            text="Beneficiary Modal"
+          >
+
+          </Button>
           <Button
             text="Create a balance"
             iconName="arrowRight"

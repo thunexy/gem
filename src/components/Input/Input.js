@@ -25,6 +25,8 @@ const Input = React.forwardRef(
       small,
       prefix,
       suffix,
+      editable=true,
+      hideLine = false,
       onSubmitEditing = () => {},
       onBlur = () => {},
     },
@@ -44,6 +46,7 @@ const Input = React.forwardRef(
             {prefix || null}
           </View>
           <TextInput
+            editable={editable}
             ref={ref}
             placeholder={placeHolder}
             placeholderTextColor="#C2C3C3"
@@ -69,12 +72,15 @@ const Input = React.forwardRef(
             style={{position: 'absolute', bottom: scale(14), right: scale(12)}}>
             {suffix || null}
           </View>
-          <View
-            style={{
-              ...style?.[showError ? 'lineError' : 'line'],
-              width: small ? scale(small - 3) : '100%',
-            }}
-          />
+          {!hideLine && (
+            <View
+              style={{
+                ...style?.[showError ? 'lineError' : 'line'],
+                width: small ? scale(small - 3) : '100%',
+              }}
+            />
+          )}
+
           {control && (
             <Text
               style={style[showError ? 'controlError' : 'control']}
