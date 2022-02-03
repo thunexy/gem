@@ -201,7 +201,11 @@ export function Dashboard({navigation}) {
             <ScrollView showsVerticalScrollIndicator={false}>
               <View
                 style={{flexDirection: 'row', justifyContent: 'space-between'}}>
-                <QuickActions icon={'transfer'} text="Transfer" />
+                <QuickActions
+                  icon={'transfer'}
+                  text="Transfer"
+                  onPress={() => navigation.navigate('TransferAmount')}
+                />
                 <QuickActions icon={'request'} text="Request" />
                 <QuickActions icon={'beneficiary'} text="Beneficiaries" />
               </View>

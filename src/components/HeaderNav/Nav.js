@@ -15,7 +15,6 @@ export default function Nav({onClose, description, title}) {
           onPress={onClose}
           style={{
             paddingLeft: scale(20),
-            paddingBottom: scale(10),
           }}>
           <IconGen tag="cancel" color="#0E093F" onPress={onClose} />
         </TouchableOpacity>

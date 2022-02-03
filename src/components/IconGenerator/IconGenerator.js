@@ -37,6 +37,7 @@ import {Request} from '../../../assets/svgs/request';
 import {Beneficiaries} from '../../../assets/svgs/beneficiaries';
 import {Debit} from '../../../assets/svgs/debit';
 import {Credit} from '../../../assets/svgs/credit';
+import { Edit } from '../../../assets/svgs/edit';
 
 const components = {
   activity: Activity,
@@ -59,6 +60,7 @@ const components = {
   debit: Debit,
   doubleArrowBack: DoubleArrowBack,
   download: Download,
+  edit: Edit,
   error: ErrorSVG,
   faceId: FaceId,
   fingerprint: Fingerprint,

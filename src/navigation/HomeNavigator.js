@@ -19,6 +19,8 @@ import ProfileComplete from '../screens/Onboarding/ProfileComplete';
 import Step1 from '../screens/Onboarding/Step1';
 import Step2 from '../screens/Onboarding/Step2';
 import Step3 from '../screens/Onboarding/Step3';
+import ReceiveAmount from '../screens/Transfer/ReceiveAmount';
+import TransferAmount from '../screens/Transfer/TransferAmount';
 const pageTransition = Platform.select({
   ios: CardStyleInterpolators.forHorizontalIOS,
   android: CardStyleInterpolators.forRevealFromBottomAndroid,
@@ -110,6 +112,16 @@ export default function HomeNavigator(props) {
         name="OpenBalance"
         component={OpenBalance}
         initialParams={{backgroundColor: '#FAF2EB'}}
+      />
+      <HomeStack.Screen
+        name="TransferAmount"
+        component={TransferAmount}
+        initialParams={{backgroundColor: '#F7C57C'}}
+      />
+      <HomeStack.Screen
+        name="ReceiveAmount"
+        component={ReceiveAmount}
+        initialParams={{backgroundColor: '#F7C57C'}}
       />
     </HomeStack.Navigator>
   );

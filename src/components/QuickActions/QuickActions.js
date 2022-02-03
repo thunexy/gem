@@ -4,10 +4,10 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 import {text as font} from '../../../assets/styles/styles';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
 import {IconGen} from '../IconGenerator/IconGenerator';
-export default function QuickActions({text, icon}) {
+export default function QuickActions({text, icon, onPress = () => {}}) {
   return (
     <TouchableOpacity
-      onPress={() => {}}
+      onPress={onPress}
       style={{
         backgroundColor: '#F8F5FF',
         borderRadius: scale(20),
