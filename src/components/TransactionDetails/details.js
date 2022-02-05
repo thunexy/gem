@@ -34,13 +34,13 @@ export default function Details({
   );
 }
 
-
 const s = StyleSheet.create({
   firstView: {
     flexDirection: 'column',
     padding: scale(12),
     backgroundColor: '#F4F4F6',
     borderRadius: scale(24),
+    marginBottom: scale(4),
   },
   secondView: {
     flexDirection: 'row',

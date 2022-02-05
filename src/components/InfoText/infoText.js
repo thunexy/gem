@@ -1,8 +1,9 @@
 import React from 'react';
-import {Text, StyleSheet, View} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 import {IconGen} from '../IconGenerator/IconGenerator';
 import {scale, moderateScale} from '../../lib/utils/scaleUtils';
 import {text} from '../../../assets/styles/styles';
+import Text from '../Text/Text';
 
 export default function InfoText({text}) {
   return (
@@ -16,19 +17,10 @@ export default function InfoText({text}) {
         justifyContent: 'flex-start',
         marginTop: scale(8),
       }}>
-      <View style = {{ marginTop: 2 }}>
+      <View style={{marginTop: 2}}>
         <IconGen tag="info" />
       </View>
-      <Text
-        style={{
-          fontSize: moderateScale(14),
-          lineHeight: moderateScale(21),
-          color: '#0E093F',
-          letterSpacing: moderateScale(0.2),
-          marginLeft: scale(10),
-          fontFamily: text.helonik,
-          flex: 1,
-        }}>
+      <Text color="#0E093F" size="h5" style={{paddingLeft: scale(10)}}>
         {text}
       </Text>
     </View>

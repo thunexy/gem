@@ -1,20 +1,29 @@
 import React, {useState} from 'react';
-import {ScrollView, Text, View} from 'react-native';
+import {ScrollView, View} from 'react-native';
 import {onboarding, text} from '../../../assets/styles/styles';
 import Footer from '../../components/Footer/Footer';
 import Nav from '../../components/HeaderNav/Nav';
 import {IconGen} from '../../components/IconGenerator/IconGenerator';
 import Picker from '../../components/Input/Picker';
+import Text from '../../components/Text/Text';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
+import CountryModal from './components/CountryModal';
+import DestinationModal from './components/DestinationModal';
+import EditModal from './components/EditModal';
+import InfoModal from './components/InfoModal';
 
 export default function ReceiveAmount({navigation}) {
   const [amount, setAmount] = useState(null);
   const [currency, setCurrency] = useState('');
+  const [editModal, setEditModal] = useState(false);
+  const [currencyModal, setCurrencyModal] = useState(false);
+  const [destinationModal, setDestinationModal] = useState(false);
+  const [infoModal, setInfoModal] = useState(false);
   const [destination, setDestination] = useState('');
   return (
     <View style={onboarding.container}>
       <View style={{backgroundColor: '#F7C57C', flex: 1}}>
-        <ScrollView contentContainerStyle={{flex: 1, backgroundColor: '#FFF'}}>
+        <ScrollView contentContainerStyle={{flex: 1}}>
           <View
             style={{
               ...onboarding.inputContainer,
@@ -25,6 +34,7 @@ export default function ReceiveAmount({navigation}) {
               title="Send money"
               description="How much will they receive?"
               onClose={navigation.goBack}
+              noPadding
             />
             <View style={{backgroundColor: '#FAF2EB', padding: scale(24)}}>
               <View
@@ -44,7 +54,7 @@ export default function ReceiveAmount({navigation}) {
                   }}>
                   ₦189,982,382.99
                 </Text>
-                <IconGen tag="edit" />
+                <IconGen tag="edit" onPress={() => setEditModal(true)} />
               </View>
             </View>
             <View
@@ -55,48 +65,52 @@ export default function ReceiveAmount({navigation}) {
                 paddingVertical: scale(16),
                 borderBottomColor: '#FAF2EB',
                 borderBottomWidth: scale(1),
+                alignItems: 'center',
               }}>
-              <Text
-                style={{
-                  fontSize: moderateScale(18),
-                  lineHeight: moderateScale(26),
-                  fontFamily: text.helonik,
-                  color: '#0E093F',
-                }}>
+              <Text color="#0E093F" size="h3" style={{alignItems: 'center'}}>
                 You’re sending: $9,150,455.99{' '}
                 <Text
+                  onPress={() => setEditModal(true)}
+                  size={'h5'}
                   style={{
-                    fontSize: moderateScale(16),
-                    lineHeight: moderateScale(20),
                     textDecorationLine: 'underline',
                     textDecorationStyle: 'dotted',
                     textDecorationColor: '#6939FF',
-                    fontFamily: text.helonik,
                   }}>
                   EDIT
                 </Text>
               </Text>
-              <IconGen tag="info" color="#6939FF" />
+              <IconGen
+                tag="info"
+                color="#6939FF"
+                onPress={() => setInfoModal(true)}
+              />
             </View>
-            <View>
+            <View style={{marginHorizontal: scale(20)}}>
               <Picker
                 value={currency}
+                label="Currency"
                 onValueChange={setCurrency}
-                data={[
-                  {
-                    label: 'Nigeria',
-                    value: 'Nigeria',
-                  },
-                  {
-                    label: 'cameroon',
-                    value: 'Nigcameria',
-                  },
-                ]}
+                info="Exchange rate: ₦570/$1"
+                disabled
+                onPress={() => setCurrencyModal(true)}
+              />
+              <Picker
+                value={currency}
+                label="Destination"
+                onValueChange={setCurrency}
+                data={[]}
+                disabled
+                onPress={() => setDestinationModal(true)}
               />
             </View>
           </View>
         </ScrollView>
       </View>
+      <InfoModal isModalOpen={infoModal} />
+      <CountryModal isModalOpen={currencyModal} />
+      <DestinationModal isModalOpen={destinationModal} />
+      <EditModal isModalOpen={editModal} />
       <Footer
         onFooterPressed={() => {}}
         btnText="Continue"

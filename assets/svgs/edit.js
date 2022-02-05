@@ -2,11 +2,12 @@ import React from 'react';
 import Svg, {ClipPath, Defs, G, Path, Rect} from 'react-native-svg';
 import {scale} from '../../src/lib/utils/scaleUtils';
 
-export const Edit = ({size = 1}) => {
+export const Edit = ({size = 1, onPress = () => {}}) => {
   return (
     <Svg
       width={scale(60 * size)}
       height={scale(60 * size)}
+      onPress={onPress}
       viewBox="0 0 58 58"
       fill="none"
       xmlns="http://www.w3.org/2000/svg">
