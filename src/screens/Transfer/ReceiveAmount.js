@@ -1,15 +1,16 @@
 import React, {useState} from 'react';
 import {ScrollView, Text, View} from 'react-native';
 import {onboarding, text} from '../../../assets/styles/styles';
-import Button from '../../components/Button/Button';
 import Footer from '../../components/Footer/Footer';
-import Funding from '../../components/Funding/Funding';
 import Nav from '../../components/HeaderNav/Nav';
 import {IconGen} from '../../components/IconGenerator/IconGenerator';
+import Picker from '../../components/Input/Picker';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
 
 export default function ReceiveAmount({navigation}) {
   const [amount, setAmount] = useState(null);
+  const [currency, setCurrency] = useState('');
+  const [destination, setDestination] = useState('');
   return (
     <View style={onboarding.container}>
       <View style={{backgroundColor: '#F7C57C', flex: 1}}>
@@ -41,7 +42,7 @@ export default function ReceiveAmount({navigation}) {
                     fontFamily: text.helonik,
                     color: '#0E093F',
                   }}>
-                  ₦189,982,382.98
+                  ₦189,982,382.99
                 </Text>
                 <IconGen tag="edit" />
               </View>
@@ -76,6 +77,22 @@ export default function ReceiveAmount({navigation}) {
                 </Text>
               </Text>
               <IconGen tag="info" color="#6939FF" />
+            </View>
+            <View>
+              <Picker
+                value={currency}
+                onValueChange={setCurrency}
+                data={[
+                  {
+                    label: 'Nigeria',
+                    value: 'Nigeria',
+                  },
+                  {
+                    label: 'cameroon',
+                    value: 'Nigcameria',
+                  },
+                ]}
+              />
             </View>
           </View>
         </ScrollView>
