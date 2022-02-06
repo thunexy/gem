@@ -6,51 +6,54 @@ import Button from '../../components/Button/Button';
 import {onboarding} from '../../../assets/styles/styles';
 import Input from '../../components/Input/Input';
 import {IconGen} from '../../components/IconGenerator/IconGenerator';
-import {text , dashboard} from '../../../assets/styles/styles';
+import {text, dashboard} from '../../../assets/styles/styles';
 import BeneficiaryContainer from '../../components/BeneficiaryContainer/BeneficiaryContainer';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import Footer from '../../components/Footer/Footer';
+import ConfirmTransfer from './components/ConfirmTransfer';
 
 // import RadioForm, {RadioButton} from 'react-native-simple-radio-button';
 
 export default function Beneficiary({navigation}) {
+  const [beneficiaryDetail, setBeneficiaryDetail] = useState({});
+  const [showConfirmTransfer , setShowConfirmTransfer] = useState(false);
   const apiResponse = [
-    // {
-    //   email_address: 'chukwuka123@yahoo.com',
-    //   first_name: 'Chukwuka',
-    //   last_name: 'Ezeoke Joseph',
-    //   avatar: '',
-    // },
-    // {
-    //   email_address: 'princesscilla@gmail.com',
-    //   first_name: 'Priscilla',
-    //   last_name: 'Agbam',
-    //   avatar: '',
-    // },
-    // {
-    //   email_address: 'princesscilla@gmail.com',
-    //   first_name: 'Priscilla',
-    //   last_name: 'Agbam',
-    //   avatar: '',
-    // },
-    // {
-    //   email_address: 'princesscilla@gmail.com',
-    //   first_name: 'Priscilla',
-    //   last_name: 'Agbam',
-    //   avatar: '',
-    // },
-    // {
-    //   email_address: 'princesscilla@gmail.com',
-    //   first_name: 'Priscilla',
-    //   last_name: 'Agbam',
-    //   avatar: '',
-    // },
-    // {
-    //   email_address: 'princesscilla@gmail.com',
-    //   first_name: 'Priscilla',
-    //   last_name: 'Agbam',
-    //   avatar: '',
-    // },
+    {
+      email_address: 'chukwuka123@yahoo.com',
+      first_name: 'Chukwuka',
+      last_name: 'Ezeoke Joseph',
+      avatar: '',
+    },
+    {
+      email_address: 'princesscilla@gmail.com',
+      first_name: 'Priscilla',
+      last_name: 'Agbam',
+      avatar: '',
+    },
+    {
+      email_address: 'princesscilla@gmail.com',
+      first_name: 'Priscilla',
+      last_name: 'Agbam',
+      avatar: '',
+    },
+    {
+      email_address: 'princesscilla@gmail.com',
+      first_name: 'Priscilla',
+      last_name: 'Agbam',
+      avatar: '',
+    },
+    {
+      email_address: 'princesscilla@gmail.com',
+      first_name: 'Priscilla',
+      last_name: 'Agbam',
+      avatar: '',
+    },
+    {
+      email_address: 'princesscilla@gmail.com',
+      first_name: 'Priscilla',
+      last_name: 'Agbam',
+      avatar: '',
+    },
   ];
   const initialState = {
     email_address: '',
@@ -143,7 +146,12 @@ export default function Beneficiary({navigation}) {
               }}>
               {apiResponse.map((item, i) => {
                 return (
-                  <TouchableOpacity onPress={() => setSelected(i)}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      setSelected(i);
+                      setBeneficiaryDetail(item);
+                      setShowConfirmTransfer(true);
+                    }}>
                     <BeneficiaryContainer
                       beneficiaryDetails={item}
                       index={i}
@@ -156,7 +164,12 @@ export default function Beneficiary({navigation}) {
             </ScrollView>
           ) : (
             <View
-              style={{alignItems: 'center', flex: 1, justifyContent: 'center' , paddingTop: scale(24)}}>
+              style={{
+                alignItems: 'center',
+                flex: 1,
+                justifyContent: 'center',
+                paddingTop: scale(24),
+              }}>
               <Image
                 source={require('../../../assets/images/empty.png')}
                 style={dashboard.empty}
@@ -174,10 +187,20 @@ export default function Beneficiary({navigation}) {
               </Text>
             </View>
           )}
+
+          <View>
+              <ConfirmTransfer 
+                  isModalOpen={showConfirmTransfer}
+                  closeModal= {() => {setShowConfirmTransfer(false)}}
+                  data = {beneficiaryDetail}
+              />
+          </View>
         </View>
       </View>
       <Footer
-        onFooterPressed={() => {navigation.goBack()}}
+        onFooterPressed={() => {
+          navigation.goBack();
+        }}
         btnText="Continue"
         btnIcon="arrowRight"
         footerText="Go Back"

@@ -22,7 +22,7 @@ import Step3 from '../screens/Onboarding/Step3';
 import ReceiveAmount from '../screens/Transfer/ReceiveAmount';
 import TransferAmount from '../screens/Transfer/TransferAmount';
 import SelectCountry from '../screens/Transfer/components/CountryModal';
-import Beneficiary from '../screens/TestScreen/Beneficiary';
+import Beneficiary from '../screens/Transfer/Beneficiary';
 const pageTransition = Platform.select({
   ios: CardStyleInterpolators.forHorizontalIOS,
   android: CardStyleInterpolators.forRevealFromBottomAndroid,
@@ -43,7 +43,7 @@ export default function HomeNavigator(props) {
       <HomeStack.Screen name="SelectCountry" component={SelectCountry} />
       <HomeStack.Screen name="Beneficiary" component={Beneficiary} />
 
-      <HomeStack.Screen name="TestBeneficiary" component={TestBeneficiary} />
+      
       <HomeStack.Screen
         name="Dashboard"
         component={Dashboard}
