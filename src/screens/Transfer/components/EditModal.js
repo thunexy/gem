@@ -6,17 +6,19 @@ import {IconGen} from '../../../components/IconGenerator/IconGenerator';
 import Text from '../../../components/Text/Text';
 import {scale} from '../../../lib/utils/scaleUtils';
 
-export default function EditModal({isModalOpen}) {
-  const [selected, setSelected] = useState(null);
-  const [amount, setAmount] = useState(null);
+export default function EditModal({
+  isModalOpen,
+  amount,
+  setAmount,
+  closeModal,
+}) {
   return (
     <BottomModal
       isModalOpen={isModalOpen}
       topline={false}
+      dismissable={false}
       showCloseIcon={false}
-      closeModal={() => {
-        setSelected(null);
-      }}
+      closeModal={closeModal}
       containerStyle={{backgroundColor: '#fff', padding: scale(20), flex: 1}}>
       <View
         style={{
@@ -28,7 +30,7 @@ export default function EditModal({isModalOpen}) {
         <Text size="h1" color="#0E093F" style={{flex: 1}}>
           Edit send amount
         </Text>
-        <IconGen tag="check" color="#8960FF" size={1.5} />
+        <IconGen tag="check" color="#8960FF" size={1.5} onPress={closeModal} />
       </View>
 
       <Funding

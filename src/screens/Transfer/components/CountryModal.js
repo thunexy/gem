@@ -68,9 +68,7 @@ export default function CountryModal({
 
     searchText.length
       ? (testArray = countryCurrency.filter(item => {
-          if (
-            item.countryName.toLowerCase().includes(searchText.toLowerCase())
-          ) {
+          if (item.name.toLowerCase().includes(searchText.toLowerCase())) {
             return item;
           }
         }))
@@ -100,7 +98,9 @@ export default function CountryModal({
           style={{margin: scale(20)}}
         />
       </View>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        keyboardShouldPersistTaps="handled">
         {countryCurrency.map((item, i) => {
           return (
             <ChooseCurrency
@@ -112,6 +112,7 @@ export default function CountryModal({
               setCurrencySelected={index => {
                 setCurrency(countryCurrency[index]?.short_name);
                 closeModal();
+                setCountryCurrency(data);
               }}
             />
           );
