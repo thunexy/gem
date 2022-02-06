@@ -1,12 +1,10 @@
 /* eslint-disable react-native/no-inline-styles */
-import React, {useState, useEffect} from 'react';
-
-import {View, Text, TouchableOpacity} from 'react-native';
+import React, {useEffect, useState} from 'react';
+import {Text, TouchableOpacity, View} from 'react-native';
 import Modal from 'react-native-modal';
 import {bottomModalStyle} from '../../../assets/styles/styles';
 import {scale} from '../../lib/utils/scaleUtils';
 import {IconGen} from '../IconGenerator/IconGenerator';
-import BeneficiaryContainer from '../BeneficiaryContainer/BeneficiaryContainer';
 
 const BottomModal = ({
   isModalOpen,

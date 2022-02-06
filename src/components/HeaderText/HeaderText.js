@@ -2,11 +2,16 @@ import React from 'react';
 import {StyleSheet, Text, View} from 'react-native';
 import {text} from '../../../assets/styles/styles';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
-export default function HeaderText({title, description, style , textStyle = {}}) {
+export default function HeaderText({
+  title,
+  description,
+  style,
+  textStyle = {},
+}) {
   return (
     <View style={{...s.container, ...style}}>
-      <Text style={{ ...s.title , ...textStyle }}>{title}</Text>
-      <Text style={s.description}>{description}</Text>
+      <Text style={{...s.title, ...textStyle}}>{title}</Text>
+      {description ? <Text style={s.description}>{description}</Text> : null}
     </View>
   );
 }

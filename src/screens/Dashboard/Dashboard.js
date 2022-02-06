@@ -25,7 +25,7 @@ import {
   wireTransferUrl,
 } from '../../lib/api/url';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
-import {resetCache, updateProfile} from '../Auth/actions/authActions';
+import {updateProfile} from '../Auth/actions/authActions';
 export function Dashboard({navigation}) {
   const {onboarding, customer, kycs, ...others} = useSelector(
     state => state.authentication,
@@ -167,13 +167,6 @@ export function Dashboard({navigation}) {
             You have no accounts opened yet. Click on the button below to open
             an account
           </Text>
-          <Button onPress ={() =>  {
-            navigation.navigate("Beneficiary")
-          }}
-            text="Beneficiary Modal"
-          >
-
-          </Button>
           <Button
             text="Create a balance"
             iconName="arrowRight"
@@ -211,7 +204,7 @@ export function Dashboard({navigation}) {
                 <QuickActions
                   icon={'transfer'}
                   text="Transfer"
-                  onPress={() => navigation.navigate('Beneficiary')}
+                  onPress={() => navigation.navigate('TransferAmount')}
                 />
                 <QuickActions icon={'request'} text="Request" />
                 <QuickActions icon={'beneficiary'} text="Beneficiaries" />
