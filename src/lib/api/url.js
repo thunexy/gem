@@ -25,3 +25,7 @@ export const fundEndUrl = `${baseUrl}/fund/end`;
 export const getUserDetailsUrl = `${baseUrl}/customers/customer/me`;
 export const fundRequestUrl = `${baseUrl}/fund/request/money/from/me`;
 export const acceptMoneyUrl = `${baseUrl}/fund/accept/money`;
+export const allowedCountriesUrl = `${baseUrl}/countries/allowed-countries`;
+export const getStatesUrl = `${baseUrl}/countries/states`;
+export const getCurrenciesUrl = `${baseUrl}/countries/currencies`;
+export const rateUrl = `${baseUrl}/rate/convert`;

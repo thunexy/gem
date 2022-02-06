@@ -1,25 +1,58 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
+import SimpleToast from 'react-native-simple-toast';
 import {onboarding, text} from '../../../assets/styles/styles';
 import Footer from '../../components/Footer/Footer';
 import Nav from '../../components/HeaderNav/Nav';
 import {IconGen} from '../../components/IconGenerator/IconGenerator';
 import Picker from '../../components/Input/Picker';
 import Text from '../../components/Text/Text';
+import {apiRequest} from '../../lib/api/api';
+import {
+  allowedCountriesUrl,
+  getCurrenciesUrl,
+  getStatesUrl,
+} from '../../lib/api/url';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
 import CountryModal from './components/CountryModal';
 import DestinationModal from './components/DestinationModal';
 import EditModal from './components/EditModal';
 import InfoModal from './components/InfoModal';
 
-export default function ReceiveAmount({navigation}) {
-  const [amount, setAmount] = useState(null);
-  const [currency, setCurrency] = useState('');
+export default function ReceiveAmount({navigation, route}) {
+  console.log(route.params?.rate);
+  const [amount, setAmount] = useState(route.params?.amount);
+  const [rate, setRate] = useState(route.params?.rate);
+  const [currency, setCurrency] = useState(route.params?.rate?.to_currency);
   const [editModal, setEditModal] = useState(false);
   const [currencyModal, setCurrencyModal] = useState(false);
   const [destinationModal, setDestinationModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
   const [destination, setDestination] = useState('');
+  const [currencies, setCurrencies] = useState([]);
+  const [loading, setLoading] = useState({
+    allowedCountries: false,
+  });
+  const getCurrencies = () => {
+    setLoading(prev => ({...prev, allowedCountries: true}));
+    apiRequest(getCurrenciesUrl, 'get')
+      .then(response => {
+        setCurrencies(response.data.filter(({is_allowed}) => is_allowed));
+      })
+      .catch(e =>
+        SimpleToast.show(
+          e.response?.data?.message || e.message,
+          SimpleToast.LONG,
+        ),
+      )
+      .finally(() => {
+        setLoading(prev => ({...prev, allowedCountries: false}));
+      });
+  };
+  useEffect(() => {
+    getCurrencies();
+  }, []);
+  console.log(currencies);
   return (
     <View style={onboarding.container}>
       <View style={{backgroundColor: '#F7C57C', flex: 1}}>
@@ -40,11 +73,12 @@ export default function ReceiveAmount({navigation}) {
               <View
                 style={{
                   backgroundColor: '#F9E1B8',
-                  padding: scale(5),
+                  paddingVertical: scale(5),
+                  paddingHorizontal: scale(10),
                   borderRadius: scale(16),
                   flexDirection: 'row',
                   alignItems: 'center',
-                  justifyContent: 'center',
+                  justifyContent: 'space-between',
                 }}>
                 <Text
                   style={{
@@ -52,7 +86,10 @@ export default function ReceiveAmount({navigation}) {
                     fontFamily: text.helonik,
                     color: '#0E093F',
                   }}>
-                  ₦189,982,382.99
+                  ₦
+                  {`${rate?.amount}`
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
                 <IconGen tag="edit" onPress={() => setEditModal(true)} />
               </View>
@@ -68,7 +105,8 @@ export default function ReceiveAmount({navigation}) {
                 alignItems: 'center',
               }}>
               <Text color="#0E093F" size="h3" style={{alignItems: 'center'}}>
-                You’re sending: $9,150,455.99{' '}
+                You’re sending: $
+                {`${+amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                 <Text
                   onPress={() => setEditModal(true)}
                   size={'h5'}
@@ -90,8 +128,11 @@ export default function ReceiveAmount({navigation}) {
               <Picker
                 value={currency}
                 label="Currency"
+                placeholder={
+                  loading.allowedCountries ? 'Loading currencies' : currency
+                }
                 onValueChange={setCurrency}
-                info="Exchange rate: ₦570/$1"
+                info={`Exchange rate: ${rate?.to_currency}570/${rate?.from_currency}1`}
                 disabled
                 onPress={() => setCurrencyModal(true)}
               />
@@ -107,8 +148,14 @@ export default function ReceiveAmount({navigation}) {
           </View>
         </ScrollView>
       </View>
+      <CountryModal
+        isModalOpen={currencyModal}
+        data={currencies}
+        closeModal={() => setCurrencyModal(false)}
+        setCurrency={setCurrency}
+        currency={currency}
+      />
       <InfoModal isModalOpen={infoModal} />
-      <CountryModal isModalOpen={currencyModal} />
       <DestinationModal isModalOpen={destinationModal} />
       <EditModal isModalOpen={editModal} />
       <Footer

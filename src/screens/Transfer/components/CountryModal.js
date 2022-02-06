@@ -9,59 +9,62 @@ import {scale} from '../../../lib/utils/scaleUtils';
 
 // import { Image } from 'react-native-svg';
 
-export default function CountryModal({isModalOpen}) {
-  const [selected, setSelected] = useState(null);
-  const [currencySelected, setCurrencySelected] = useState(0);
+export default function CountryModal({
+  isModalOpen,
+  currency,
+  closeModal,
+  data,
+  setCurrency,
+}) {
   const [searchText, setSearchText] = useState('');
   const [countryCurrency, setCountryCurrency] = useState([]);
-  const currencyList = [
-    {
-      countryName: 'United States Dollar',
-      slug: 'USD',
-      imageSource: flags.usa,
-    },
-    {
-      countryName: 'Nigerian Naira',
-      slug: 'NGN',
-      imageSource: flags.nigeria,
-    },
+  // const currencyList = [
+  //   {
+  //     countryName: 'United States Dollar',
+  //     slug: 'USD',
+  //     imageSource: flags.usa,
+  //   },
+  //   {
+  //     countryName: 'Nigerian Naira',
+  //     slug: 'NGN',
+  //     imageSource: flags.nigeria,
+  //   },
 
-    {
-      countryName: 'South African Rand',
-      slug: 'ZAR',
-      imageSource: flags.south_africa,
-    },
+  //   {
+  //     countryName: 'South African Rand',
+  //     slug: 'ZAR',
+  //     imageSource: flags.south_africa,
+  //   },
 
-    {
-      countryName: 'Egyptian Pound',
-      slug: 'EGP',
-      imageSource: flags.egypt,
-    },
-    {
-      countryName: 'Algerian Dinar',
-      slug: 'DZD',
-      imageSource: flags.algeria,
-    },
-    {
-      countryName: 'Ghanian Cedi',
-      slug: 'GHS',
-      imageSource: flags.ghana,
-    },
-    {
-      countryName: 'Ghan Cedi',
-      slug: 'GHS',
-      imageSource: flags.ghana,
-    },
-  ];
+  //   {
+  //     countryName: 'Egyptian Pound',
+  //     slug: 'EGP',
+  //     imageSource: flags.egypt,
+  //   },
+  //   {
+  //     countryName: 'Algerian Dinar',
+  //     slug: 'DZD',
+  //     imageSource: flags.algeria,
+  //   },
+  //   {
+  //     countryName: 'Ghanian Cedi',
+  //     slug: 'GHS',
+  //     imageSource: flags.ghana,
+  //   },
+  //   {
+  //     countryName: 'Ghan Cedi',
+  //     slug: 'GHS',
+  //     imageSource: flags.ghana,
+  //   },
+  // ];
 
   useEffect(() => {
-    setCountryCurrency(currencyList);
-  }, []);
+    setCountryCurrency(data);
+  }, [data]);
 
   useEffect(() => {
     let testArray;
     testArray = [];
-
 
     searchText.length
       ? (testArray = countryCurrency.filter(item => {
@@ -75,7 +78,7 @@ export default function CountryModal({isModalOpen}) {
     if (testArray.length) {
       setCountryCurrency(testArray);
     } else {
-      setCountryCurrency(currencyList);
+      setCountryCurrency(data);
     }
   }, [searchText]);
 
@@ -84,12 +87,8 @@ export default function CountryModal({isModalOpen}) {
       isModalOpen={isModalOpen}
       topLine={false}
       showCloseIcon={false}
-      closeModal={() => {
-        setSelected(null);
-        setSearchText('');
-        setCurrencySelected(0);
-        setCountryCurrency(currencyList);
-      }}
+      closeModal={closeModal}
+      dismissable={false}
       containerStyle={{backgroundColor: '#fff'}}>
       <View>
         <Input
@@ -105,12 +104,15 @@ export default function CountryModal({isModalOpen}) {
         {countryCurrency.map((item, i) => {
           return (
             <ChooseCurrency
-              imageSource={item.imageSource}
-              countryName={item.countryName}
-              currency={item.slug}
+              imageSource={flags.usa}
+              countryName={item.name}
+              currency={item.short_name}
               index={i}
-              currencySelected={currencySelected}
-              setCurrencySelected={setCurrencySelected}
+              currencySelected={item.short_name === currency ? i : null}
+              setCurrencySelected={index => {
+                setCurrency(countryCurrency[index]?.short_name);
+                closeModal();
+              }}
             />
           );
         })}

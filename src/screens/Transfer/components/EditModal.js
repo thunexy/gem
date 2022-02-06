@@ -2,11 +2,8 @@ import React, {useState} from 'react';
 import {View} from 'react-native';
 import BottomModal from '../../../components/BottomModal/BottomModal';
 import Funding from '../../../components/Funding/Funding';
-import HeaderText from '../../../components/HeaderText/HeaderText';
 import {IconGen} from '../../../components/IconGenerator/IconGenerator';
-import InfoText from '../../../components/InfoText/infoText';
 import Text from '../../../components/Text/Text';
-import TransactionDetails from '../../../components/TransactionDetails/details';
 import {scale} from '../../../lib/utils/scaleUtils';
 
 export default function EditModal({isModalOpen}) {

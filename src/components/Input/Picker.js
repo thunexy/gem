@@ -21,6 +21,7 @@ const Picker = ({
   onPress = () => {},
   disabled,
   data = [],
+  placeholder = '',
 }) => {
   return (
     <View style={[customStyle]}>
@@ -39,7 +40,7 @@ const Picker = ({
           paddingHorizontal: scale(16),
         }}>
         {disabled ? (
-          <TextInput editable={false} />
+          <TextInput editable={false} placeholder={placeholder} />
         ) : (
           <RNPicker
             style={{
