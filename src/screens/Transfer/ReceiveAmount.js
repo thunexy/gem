@@ -28,7 +28,21 @@ export default function ReceiveAmount({navigation, route}) {
   const [currencyModal, setCurrencyModal] = useState(false);
   const [destinationModal, setDestinationModal] = useState(false);
   const [infoModal, setInfoModal] = useState(false);
-  const [destination, setDestination] = useState('');
+  const destinations = [
+    {
+      icon: 'logo',
+      title: 'Gen User',
+    },
+    {
+      icon: 'logo',
+      title: 'Within US (ACH Domestic Wire)',
+    },
+    {
+      icon: 'logo',
+      title: 'Outside US (International Wire)',
+    },
+  ];
+  const [destination, setDestination] = useState(destinations[0].title);
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState({
     allowedCountries: false,
@@ -67,6 +81,8 @@ export default function ReceiveAmount({navigation, route}) {
           beneficiaries: response.data,
           destination,
           currencies,
+          amount,
+          rate,
         });
       })
       .catch(e => {
@@ -180,7 +196,6 @@ export default function ReceiveAmount({navigation, route}) {
                 placeholder={
                   loading.allowedCountries ? 'Loading currencies' : currency
                 }
-                onValueChange={setCurrency}
                 info={
                   rate?.to_currency
                     ? `Exchange rate: ${rate?.to_currency}${rate?.rate}/${rate?.from_currency}1`
@@ -190,11 +205,8 @@ export default function ReceiveAmount({navigation, route}) {
                 onPress={() => setCurrencyModal(true)}
               />
               <Picker
-                value={currency}
                 placeholder={destination}
                 label="Destination"
-                onValueChange={setCurrency}
-                data={[]}
                 disabled
                 onPress={() => setDestinationModal(true)}
               />
@@ -211,14 +223,17 @@ export default function ReceiveAmount({navigation, route}) {
       />
       <InfoModal
         isModalOpen={infoModal}
-        exchangeRate={`${rate?.to_currency}${rate?.rate}/${rate?.from_currency}1`}
+        exchangeRate={`${rate?.to_currency ?? '...'}${rate?.rate ?? '...'}/${
+          rate?.from_currency ?? ''
+        }1`}
         amountPaid={
-          `${amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
-          ` ${rate?.from_currency}`
+          `${amount ?? 0}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+          ` ${rate?.from_currency ?? ''}`
         }
         amountReceived={
-          `${rate?.amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
-          ` ${rate?.to_currency}`
+          `${rate?.amount ?? 0}`
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ` ${rate?.to_currency ?? ''}`
         }
         closeModal={() => setInfoModal(false)}
       />
@@ -226,20 +241,7 @@ export default function ReceiveAmount({navigation, route}) {
         isModalOpen={destinationModal}
         destination={destination}
         setDestination={setDestination}
-        data={[
-          {
-            icon: 'logo',
-            title: 'Gen User',
-          },
-          {
-            icon: 'logo',
-            title: 'Within US (ACH Domestic Wire)',
-          },
-          {
-            icon: 'logo',
-            title: 'Outside US (International Wire)',
-          },
-        ]}
+        data={destinations}
         closeModal={() => setDestinationModal(false)}
       />
       <EditModal

@@ -1,5 +1,6 @@
-import React, {useEffect, useState} from 'react';
-import {ScrollView, View, Text, TouchableOpacity} from 'react-native';
+import React, {useState} from 'react';
+import {ScrollView, View, Text, TouchableOpacity, Image} from 'react-native';
+import {useNavigation} from '@react-navigation/native';
 import BottomModal from '../../../components/BottomModal/BottomModal';
 import {IconGen} from '../../../components/IconGenerator/IconGenerator';
 import {scale, moderateScale} from '../../../lib/utils/scaleUtils';
@@ -8,16 +9,57 @@ import FundingText from '../../../components/Funding/FundingText';
 import Details from '../../../components/TransactionDetails/details';
 import Footer from '../../../components/Footer/Footer';
 import SetPin from './SetPin';
+import {apiRequest} from '../../../lib/api/api';
+import {sendMoneyUrl} from '../../../lib/api/url';
+import SimpleToast from 'react-native-simple-toast';
+import StatusModal from '../../../components/BottomModal/StatusModal';
 
-export default function ConfirmTransfer({isModalOpen, closeModal, data}) {
+export default function ConfirmTransfer({
+  isModalOpen,
+  closeModal,
+  data,
+  selected,
+}) {
   const onboarding = '';
+  const navigation = useNavigation();
   const exists = false;
+  const [loading, setLoading] = useState(false);
   const [showSetPinArea, setShowSetPinArea] = useState(false);
+  const [successModal, showSuccessModal] = useState(false);
+  const handleTransfer = pin => {
+    setLoading(true);
+    const payload = {
+      narration: '',
+      amount: data.amount,
+      pin,
+      currency: data.rate.to_currency,
+      beneficiary_id: data.beneficiaries[selected].id,
+      customer_account_id: data.beneficiaries[selected].customer_id,
+    };
+    apiRequest(sendMoneyUrl, 'post', payload)
+      .then(response => {
+        showSuccessModal(true);
+      })
+      .catch(e => {
+        SimpleToast.show(
+          e.response?.data?.message || e.message,
+          SimpleToast.LONG,
+        );
+      })
+      .finally(() => {
+        setLoading(false);
+        closeModal();
+        setShowSetPinArea(false);
+      });
+  };
+  const name = data?.beneficiaries[selected]?.account_name
+    ? data?.beneficiaries[selected]?.account_name
+    : `${data?.beneficiaries[selected]?.first_name} ${data?.beneficiaries[selected]?.last_name}`;
   return (
     <BottomModal
       isModalOpen={isModalOpen}
       closeModal={closeModal}
-      containerStyle={{backgroundColor: '#fff'}}
+      containerStyle={{backgroundColor: '#fff', paddingTop: scale(10)}}
       showCloseIcon={false}>
       <ScrollView showsVerticalScrollIndicator={false}>
         <View
@@ -54,13 +96,11 @@ export default function ConfirmTransfer({isModalOpen, closeModal, data}) {
               Confirm transfer details
             </Text>
 
-            <View style={{alignItems: 'center', marginTop: scale(16)}}>
-              <Text>
-                <IconGen tag="arrowInclinedTopRight" />
-              </Text>
+            <View style={{alignItems: 'center', marginTop: scale(20)}}>
+              <IconGen tag="arrowInclinedTopRight" />
               <Text
                 style={{
-                  marginTop: scale(8),
+                  marginTop: scale(16),
                   fontFamily: text.helonik,
                   backgroundColor: '#F9E1B8',
                   paddingVertical: scale(8),
@@ -72,7 +112,12 @@ export default function ConfirmTransfer({isModalOpen, closeModal, data}) {
               </Text>
             </View>
             <View style={{marginTop: scale(8)}}>
-              <FundingText amount="9150500" hideBorder={true} />
+              <FundingText
+                amount={`${data?.amount}`
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                hideBorder={true}
+              />
             </View>
 
             <View
@@ -118,7 +163,7 @@ export default function ConfirmTransfer({isModalOpen, closeModal, data}) {
                       letterSpacing: moderateScale(0.1),
                       color: '#0E093F',
                     }}>
-                    {data?.first_name} {data?.last_name}
+                    {name}
                   </Text>
                   <Text
                     numberOfLines={1}
@@ -129,7 +174,10 @@ export default function ConfirmTransfer({isModalOpen, closeModal, data}) {
                       letterSpacing: moderateScale(0.2),
                       color: '#0E093F',
                     }}>
-                    {data?.email_address}
+                    {
+                      data?.beneficiaries?.[selected]
+                        ?.beneficiary_customer_email
+                    }
                   </Text>
                 </View>
               </View>
@@ -142,8 +190,18 @@ export default function ConfirmTransfer({isModalOpen, closeModal, data}) {
               <Details
                 processingFee={data?.processingFee}
                 estimatedTime={data?.estimatedTime}
-                amountToPay={data?.amountToPay}
-                amountToReceive={data?.amountToRecieve}
+                amountToPay={
+                  `${data?.amount}`
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+                  ` ${data?.rate?.from_currency}`
+                }
+                amountToReceive={
+                  `${data?.rate?.amount}`
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+                  ` ${data?.rate?.to_currency}`
+                }
                 arrival
               />
             </View>
@@ -157,14 +215,37 @@ export default function ConfirmTransfer({isModalOpen, closeModal, data}) {
               }}
             />
           </View>
-
         </View>
       </ScrollView>
       <SetPin
-          isModalOpen={showSetPinArea}
-          closeModal = {() => {
-              setShowSetPinArea(false)
-          }}
+        isModalOpen={showSetPinArea}
+        loading={loading}
+        handleTransfer={handleTransfer}
+        closeModal={() => {
+          setShowSetPinArea(false);
+        }}
+      />
+      <StatusModal
+        displayModal={successModal}
+        setDisplayModal={showSuccessModal}
+        dismissable={false}
+        loading={loading}
+        title={`Money Sent.`}
+        description={
+          <Text>
+            You have successfully sent{' '}
+            <Text style={{fontFamily: text.helonikBold}}>
+              ${data?.amount + ''.replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </Text>{' '}
+            to <Text style={{fontFamily: text.helonikBold}}>{name}</Text>. The
+            money should arrive in the recipient’s account shortly.
+          </Text>
+        }
+        btnText="Ok, thanks"
+        onPress={() => {
+          navigation.navigate('Dashboard');
+        }}
+        icon="arrowRight"
       />
     </BottomModal>
   );

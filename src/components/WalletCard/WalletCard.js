@@ -3,15 +3,17 @@ import {StyleSheet, Text, View} from 'react-native';
 import {text} from '../../../assets/styles/styles';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
 import {IconGen} from '../IconGenerator/IconGenerator';
-export default function WalletCard() {
+export default function WalletCard({amount, accountType, currency, name}) {
   return (
     <View style={s.container}>
-      <Text style={s.amount}>$122,069,420.88</Text>
-      <Text style={s.name}>Chidimma Adamu Ademola</Text>
+      <Text style={s.amount}>
+        ${`${amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+      </Text>
+      <Text style={s.name}>{name}</Text>
       <View style={s.statusContainer}>
         <View style={s.horizontal}>
-          <Text style={s.account}>CHECKING</Text>
-          <Text style={s.currency}>USD - $</Text>
+          <Text style={s.account}>{accountType}</Text>
+          <Text style={s.currency}>{currency}</Text>
         </View>
         {/* <IconGen tag="addMoney" /> */}
       </View>

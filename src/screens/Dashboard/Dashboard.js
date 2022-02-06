@@ -186,7 +186,16 @@ export function Dashboard({navigation}) {
       ) : (
         <View style={{backgroundColor: '#CFBEFF', flex: 1}}>
           <View style={{marginHorizontal: scale(24)}}>
-            <WalletCard />
+            <WalletCard
+              amount={others?.balances[0]?.available_balance}
+              name={`${customer.first_name} ${customer.last_name}`}
+              accountType={
+                others?.balances[0]?.currency === 'NGN' ? 'SAVINGS' : 'CHECKING'
+              }
+              currency={
+                others?.balances[0]?.currency === 'NGN' ? 'NGN - N' : 'USD - $'
+              }
+            />
           </View>
           <View
             style={[

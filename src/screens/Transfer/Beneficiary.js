@@ -163,7 +163,6 @@ export default function Beneficiary({navigation, route}) {
                       onPress={() => {
                         setSelected(i);
                         setBeneficiaryDetail(item);
-                        setShowConfirmTransfer(true);
                       }}>
                       <BeneficiaryContainer
                         beneficiaryDetails={item}
@@ -209,7 +208,8 @@ export default function Beneficiary({navigation, route}) {
           closeModal={() => {
             setShowConfirmTransfer(false);
           }}
-          data={beneficiaryDetail}
+          data={{...route.params}}
+          selected={selected}
         />
       </View>
       <BeneficiaryModal
@@ -229,6 +229,9 @@ export default function Beneficiary({navigation, route}) {
           navigation.goBack();
         }}
         btnText="Continue"
+        onPress={() => {
+          setShowConfirmTransfer(true);
+        }}
         btnIcon="arrowRight"
         footerText="Go Back"
         footerIcon="arrowLeft"

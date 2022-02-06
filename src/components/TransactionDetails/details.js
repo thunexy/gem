@@ -9,18 +9,25 @@ export default function Details({
   amountToPay,
   amountToReceive,
   arrival = false,
-  estimatedTime = ""
+  estimatedTime = '',
 }) {
   return (
-    <View style={s.firstView}>
+    <View
+      style={{
+        ...s.firstView,
+        backgroundColor: arrival ? '#FFF' : '#F4F4F6',
+        borderColor: arrival ? '#F4F4F6' : '#fff',
+      }}>
       <View style={s.secondView}>
         <Text style={{fontFamily: text.helonik}}>Processing fee</Text>
-        <Text style={{fontFamily: text.helonikBold}}>{processingFee}</Text>
+        <Text style={{fontFamily: text.helonikBold}}>0 USD</Text>
       </View>
       {arrival ? (
         <View style={s.secondView}>
-          <Text style={{fontFamily: text.helonik}}>Estimated Time of Arrival</Text>
-          <Text style={{fontFamily: text.helonikBold}}>{estimatedTime}</Text>
+          <Text style={{fontFamily: text.helonik}}>
+            Estimated Time of Arrival
+          </Text>
+          <Text style={{fontFamily: text.helonikBold}}>1-2 business days</Text>
         </View>
       ) : (
         <View style={s.secondView}>
@@ -49,6 +56,7 @@ const s = StyleSheet.create({
     backgroundColor: '#F4F4F6',
     borderRadius: scale(24),
     marginBottom: scale(4),
+    borderWidth: scale(1),
   },
   secondView: {
     flexDirection: 'row',
