@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {text} from '../../../assets/styles/styles';
 import {moderateScale, scale, verticalScale} from '../../lib/utils/scaleUtils';
-export default function FundingText({amount, hideBorder, style = {}}) {
+export default function FundingText({amount, hideBorder, style = {}, currency}) {
   return (
     <View
       style={{

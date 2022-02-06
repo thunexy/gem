@@ -27,6 +27,7 @@ export default function ReceiveAmount({navigation, route}) {
   const [editModal, setEditModal] = useState(false);
   const [currencyModal, setCurrencyModal] = useState(false);
   const [destinationModal, setDestinationModal] = useState(false);
+  const [editType, setEditType] = useState('from');
   const [infoModal, setInfoModal] = useState(false);
   const destinations = [
     {
@@ -145,10 +146,13 @@ export default function ReceiveAmount({navigation, route}) {
                   justifyContent: 'space-between',
                 }}>
                 <Text
+                  numberOfLines={1}
                   style={{
                     fontSize: moderateScale(36),
                     fontFamily: text.helonik,
                     color: '#0E093F',
+                    flex: 1,
+                    marginRight: scale(10),
                   }}>
                   {loading.rate
                     ? '...'
@@ -156,7 +160,13 @@ export default function ReceiveAmount({navigation, route}) {
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
-                <IconGen tag="edit" onPress={() => setEditModal(true)} />
+                <IconGen
+                  tag="edit"
+                  onPress={() => {
+                    setEditModal(true);
+                    setEditType('to');
+                  }}
+                />
               </View>
             </View>
             <View
@@ -173,7 +183,10 @@ export default function ReceiveAmount({navigation, route}) {
                 You’re sending: $
                 {`${+amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                 <Text
-                  onPress={() => setEditModal(true)}
+                  onPress={() => {
+                    setEditModal(true);
+                    setEditType('from');
+                  }}
                   size={'h5'}
                   style={{
                     textDecorationLine: 'underline',
@@ -233,7 +246,8 @@ export default function ReceiveAmount({navigation, route}) {
         amountReceived={
           `${rate?.amount ?? 0}`
             .toString()
-            .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ` ${rate?.to_currency ?? ''}`
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+          ` ${rate?.to_currency ?? ''}`
         }
         closeModal={() => setInfoModal(false)}
       />
@@ -246,7 +260,9 @@ export default function ReceiveAmount({navigation, route}) {
       />
       <EditModal
         isModalOpen={editModal}
+        // amount={editType === 'to' ? rate?.amount : amount}
         amount={amount}
+        currency={rate?.to_currency}
         setAmount={setAmount}
         closeModal={() => setEditModal(false)}
       />
