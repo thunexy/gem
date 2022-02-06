@@ -12,6 +12,7 @@ import {
   allowedCountriesUrl,
   getCurrenciesUrl,
   getStatesUrl,
+  rateUrl,
 } from '../../lib/api/url';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
 import CountryModal from './components/CountryModal';
@@ -20,9 +21,8 @@ import EditModal from './components/EditModal';
 import InfoModal from './components/InfoModal';
 
 export default function ReceiveAmount({navigation, route}) {
-  console.log(route.params?.rate);
   const [amount, setAmount] = useState(route.params?.amount);
-  const [rate, setRate] = useState(route.params?.rate);
+  const [rate, setRate] = useState(null);
   const [currency, setCurrency] = useState(route.params?.rate?.to_currency);
   const [editModal, setEditModal] = useState(false);
   const [currencyModal, setCurrencyModal] = useState(false);
@@ -32,7 +32,26 @@ export default function ReceiveAmount({navigation, route}) {
   const [currencies, setCurrencies] = useState([]);
   const [loading, setLoading] = useState({
     allowedCountries: false,
+    rate: false,
   });
+  const getRate = () => {
+    setLoading(prev => ({...prev, rate: true}));
+    apiRequest(rateUrl, 'post', {
+      amount,
+      from_currency_name: 'USD',
+      to_currency_name: currency,
+    })
+      .then(response => {
+        setRate(response.data);
+      })
+      .catch(e =>
+        SimpleToast.show(
+          e.response?.data?.message || e.message,
+          SimpleToast.LONG,
+        ),
+      )
+      .finally(() => setLoading(prev => ({...prev, rate: false})));
+  };
   const getCurrencies = () => {
     setLoading(prev => ({...prev, allowedCountries: true}));
     apiRequest(getCurrenciesUrl, 'get')
@@ -52,7 +71,9 @@ export default function ReceiveAmount({navigation, route}) {
   useEffect(() => {
     getCurrencies();
   }, []);
-  console.log(currencies);
+  useEffect(() => {
+    getRate();
+  }, [amount, currency]);
   return (
     <View style={onboarding.container}>
       <View style={{backgroundColor: '#F7C57C', flex: 1}}>
@@ -86,10 +107,11 @@ export default function ReceiveAmount({navigation, route}) {
                     fontFamily: text.helonik,
                     color: '#0E093F',
                   }}>
-                  ₦
-                  {`${rate?.amount}`
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+                  {loading.rate
+                    ? '...'
+                    : `₦${rate?.amount}`
+                        .toString()
+                        .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
                 <IconGen tag="edit" onPress={() => setEditModal(true)} />
               </View>
@@ -132,12 +154,13 @@ export default function ReceiveAmount({navigation, route}) {
                   loading.allowedCountries ? 'Loading currencies' : currency
                 }
                 onValueChange={setCurrency}
-                info={`Exchange rate: ${rate?.to_currency}570/${rate?.from_currency}1`}
+                info={`Exchange rate: ${rate?.to_currency}${rate?.rate}/${rate?.from_currency}1`}
                 disabled
                 onPress={() => setCurrencyModal(true)}
               />
               <Picker
                 value={currency}
+                placeholder={destination}
                 label="Destination"
                 onValueChange={setCurrency}
                 data={[]}
@@ -155,15 +178,52 @@ export default function ReceiveAmount({navigation, route}) {
         setCurrency={setCurrency}
         currency={currency}
       />
-      <InfoModal isModalOpen={infoModal} />
-      <DestinationModal isModalOpen={destinationModal} />
-      <EditModal isModalOpen={editModal} />
+      <InfoModal
+        isModalOpen={infoModal}
+        exchangeRate={`${rate?.to_currency}${rate?.rate}/${rate?.from_currency}1`}
+        amountPaid={
+          `${amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+          ` ${rate?.from_currency}`
+        }
+        amountReceived={
+          `${rate?.amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+          ` ${rate?.to_currency}`
+        }
+        closeModal={() => setInfoModal(false)}
+      />
+      <DestinationModal
+        isModalOpen={destinationModal}
+        destination={destination}
+        setDestination={setDestination}
+        data={[
+          {
+            icon: 'logo',
+            title: 'Gen User',
+          },
+          {
+            icon: 'logo',
+            title: 'Within US (ACH Domestic Wire)',
+          },
+          {
+            icon: 'logo',
+            title: 'Outside US (International Wire)',
+          },
+        ]}
+        closeModal={() => setDestinationModal(false)}
+      />
+      <EditModal
+        isModalOpen={editModal}
+        amount={amount}
+        setAmount={setAmount}
+        closeModal={() => setEditModal(false)}
+      />
       <Footer
         onFooterPressed={() => {}}
         btnText="Continue"
         btnIcon="arrowRight"
         footerText="Go back"
         footerIcon="arrowLeft"
+        disabled={!destination || !currency}
       />
     </View>
   );

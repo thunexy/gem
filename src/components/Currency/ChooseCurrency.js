@@ -8,17 +8,15 @@ export default function ChooseCurrency({
   currency,
   index,
   currencySelected,
-  setCurrencySelected
+  setCurrencySelected,
 }) {
-    
-    const selected = null;
-    
+  const selected = null;
+
   return (
-    <TouchableOpacity 
-        onPress={() => {
-            setCurrencySelected(index)
-        }}
-    >
+    <TouchableOpacity
+      onPress={() => {
+        setCurrencySelected(index);
+      }}>
       <View
         style={{
           flexDirection: 'row',
@@ -26,7 +24,7 @@ export default function ChooseCurrency({
           justifyContent: 'space-between',
           backgroundColor: currencySelected == index ? '#F5F9E4' : '#fff',
           padding: scale(20),
-          marginBottom: scale(10)
+          marginBottom: scale(10),
         }}>
         <View style={styles.flagWrapper}>
           <Image
@@ -38,7 +36,7 @@ export default function ChooseCurrency({
             }}
           />
           <Text style={{marginLeft: scale(14), fontSize: 20, color: '#0E093F'}}>
-            {countryName} 
+            {countryName}
           </Text>
         </View>
         <Text
