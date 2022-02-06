@@ -25,12 +25,12 @@ const Picker = ({
 }) => {
   return (
     <View style={[customStyle]}>
-      {label && (
+      {label ? (
         <RNText style={style.label}>
           {label}
           {isRequired && <RNText style={style.asterisks}>*</RNText>}
         </RNText>
-      )}
+      ) : null}
       <TouchableOpacity
         onPress={onPress}
         style={{
@@ -40,11 +40,18 @@ const Picker = ({
           paddingHorizontal: scale(16),
         }}>
         {disabled ? (
-          <TextInput editable={false} placeholder={placeholder} />
+          <TextInput
+            editable={false}
+            placeholder={placeholder}
+            placeholderTextColor="#000"
+            style={{fontFamily: text.helonik, fontSize: moderateScale(16)}}
+          />
         ) : (
           <RNPicker
             style={{
               fontSize: moderateScale(16),
+              fontFamily: text.helonik,
+              color: '#000',
             }}
             useNativeAndroidPickerStyle={false}
             value={value}
@@ -57,7 +64,7 @@ const Picker = ({
           <IconGen tag="ChevronRight" colour={'#0E093F'} />
         </View>
       </TouchableOpacity>
-      {info && <Text size="h6">{info}</Text>}
+      {info ? <Text size="h6">{info}</Text> : null}
     </View>
   );
 };

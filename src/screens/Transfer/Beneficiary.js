@@ -1,102 +1,90 @@
-import React, {useState} from 'react';
-import {ScrollView, Text, View, Image} from 'react-native';
-import Nav from '../../components/HeaderNav/Nav';
-import {scale, moderateScale} from '../../lib/utils/scaleUtils';
-import Button from '../../components/Button/Button';
-import {onboarding} from '../../../assets/styles/styles';
-import Input from '../../components/Input/Input';
-import {IconGen} from '../../components/IconGenerator/IconGenerator';
-import {text, dashboard} from '../../../assets/styles/styles';
-import BeneficiaryContainer from '../../components/BeneficiaryContainer/BeneficiaryContainer';
+import React, {useEffect, useState} from 'react';
+import {Image, ScrollView, Text, View} from 'react-native';
 import {TouchableOpacity} from 'react-native-gesture-handler';
+import SimpleToast from 'react-native-simple-toast';
+import {useSelector} from 'react-redux';
+import {dashboard, onboarding, text} from '../../../assets/styles/styles';
+import BeneficiaryContainer from '../../components/BeneficiaryContainer/BeneficiaryContainer';
 import Footer from '../../components/Footer/Footer';
+import Nav from '../../components/HeaderNav/Nav';
+import {IconGen} from '../../components/IconGenerator/IconGenerator';
+import Input from '../../components/Input/Input';
+import {apiRequest} from '../../lib/api/api';
+import {
+  allowedCountriesUrl,
+  countriesUrl,
+  fetchBeneficiariesUrl,
+} from '../../lib/api/url';
+import {scale} from '../../lib/utils/scaleUtils';
+import BeneficiaryModal from './components/BeneficiaryModal';
 import ConfirmTransfer from './components/ConfirmTransfer';
 
 // import RadioForm, {RadioButton} from 'react-native-simple-radio-button';
 
-export default function Beneficiary({navigation}) {
-    const [showConfirmTransfer, setShowConfirmTransfer] = useState(false);
-  const apiResponse = [
-      {
-      email_address: 'chukwuka123@yahoo.com',
-      first_name: 'Chukwuka',
-      last_name: 'Ezeoke Joseph',
-      avatar: '',
-      processingFee: '0 USD',
-      estimatedTime: '1-2 business days',
-      amountToPay: '9,150,000.00',
-      amountToRecieve: '9,150,000.00',
-    },
-    {
-      email_address: 'princesscilla@gmail.com',
-      first_name: 'Priscilla',
-      last_name: 'Agbam',
-      avatar: '',
-      processingFee: '0 USD',
-      estimatedTime: '1-2 business days',
-      amountToPay: '9,150,000.00',
-      amountToRecieve: '9,150,000.00',
-    },
-    {
-      email_address: 'princesscilla@gmail.com',
-      first_name: 'Priscilla',
-      last_name: 'Agbam',
-      avatar: '',
-      processingFee: '0 USD',
-      estimatedTime: '1-2 business days',
-      amountToPay: '9,150,000.00',
-      amountToRecieve: '9,150,000.00',
-    },
-    {
-        email_address: 'princesscilla@gmail.com',
-        first_name: 'Priscilla',
-        last_name: 'Agbam',
-        avatar: '',
-        processingFee: '0 USD',
-        estimatedTime: '1-2 business days',
-        amountToPay: '9,150,000.00',
-        amountToRecieve: '9,150,000.00',
-    },
-    {
-        email_address: 'princesscilla@gmail.com',
-        first_name: 'Priscilla',
-        last_name: 'Agbam',
-        avatar: '',
-        processingFee: '0 USD',
-        estimatedTime: '1-2 business days',
-        amountToPay: '9,150,000.00',
-        amountToRecieve: '9,150,000.00',
-    },
-    {
-        email_address: 'princesscilla@gmail.com',
-      first_name: 'Priscilla',
-      last_name: 'Agbam',
-      avatar: '',
-      processingFee: '0 USD',
-      estimatedTime: '1-2 business days',
-      amountToPay: '9,150,000.00',
-      amountToRecieve: '9,150,000.00',
-    },
-  ];
-  const initialState = {
-      email_address: '',
-      first_name: '',
-      last_name: '',
-    };
-    
-    const [state, setState] = useState(initialState);
-    const [selected, setSelected] = useState(0);
-    const [beneficiaryDetail, setBeneficiaryDetail] = useState(apiResponse.length ? apiResponse[0] : {});
-
+export default function Beneficiary({navigation, route}) {
+  const [beneficiaryDetail, setBeneficiaryDetail] = useState({});
+  const [beneficiaryModal, setBeneficiaryModal] = useState(false);
+  const [countries, setCountries] = useState([]);
+  const [beneficiaries, setBeneficiaries] = useState(
+    route.params?.beneficiaries,
+  );
+  const [showConfirmTransfer, setShowConfirmTransfer] = useState(false);
+  const [selected, setSelected] = useState(0);
   const [searchText, setSearchText] = useState('');
+
+  const auth = useSelector(state => state.authentication);
+  const fetchBeneficiaries = () => {
+    apiRequest(
+      `${fetchBeneficiariesUrl}?Type=${
+        route.params?.destination === 'Gen User' ? 'GEN' : 'OTHERS'
+      }&EmailAddress=${auth.customer?.email_address}`,
+      'get',
+    )
+      .then(response => {
+        setBeneficiaries(response.data);
+      })
+      .catch(e => {
+        SimpleToast.show(
+          e.response?.data?.message || e.message,
+          SimpleToast.LONG,
+        );
+      })
+      .finally(() => {});
+  };
+
+  const fetchCountries = () => {
+    apiRequest(countriesUrl, 'get')
+      .then(response => {
+        setCountries(
+          response.data.filter(item => {
+            item.label = item.name;
+            item.value = item.id;
+            return item.allowed;
+          }),
+        );
+      })
+      .catch(e => {
+        SimpleToast.show(
+          e.response?.data?.message || e.message,
+          SimpleToast.LONG,
+        );
+      })
+      .finally(() => {});
+  };
+
+  useEffect(() => {
+    fetchCountries();
+  }, []);
+
   return (
     <View style={onboarding.container}>
-      <View style={{backgroundColor: '#F7C57C', flex: 1}}>
+      <View style={{backgroundColor: '#CFBEFF', flex: 1}}>
         <View
           style={{
             ...onboarding.inputContainer,
             paddingHorizontal: scale(0),
             flex: 1,
+            paddingBottom: 0,
           }}>
           <Nav
             title="Send money"
@@ -131,6 +119,7 @@ export default function Beneficiary({navigation}) {
               position: 'relative',
             }}>
             <Text
+              onPress={() => setBeneficiaryModal(true)}
               style={{
                 textAlign: 'center',
                 marginTop: scale(14),
@@ -138,13 +127,13 @@ export default function Beneficiary({navigation}) {
                 borderWidth: 1,
                 borderRadius: scale(12),
                 paddingVertical: scale(14),
-                backgroundColor: !apiResponse.length ? '#8960FF' : 'none',
+                backgroundColor: !beneficiaries?.length ? '#8960FF' : 'none',
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{marginRight: scale(8), color: '#fff'}}>
                   <IconGen
                     tag="addbensvg"
-                    color={!apiResponse.length ? '#fff' : '#6939FF'}
+                    color={!beneficiaries?.length ? '#fff' : '#6939FF'}
                   />
                 </Text>
 
@@ -152,7 +141,7 @@ export default function Beneficiary({navigation}) {
                   style={{
                     fontFamily: text.helonikBold,
                     paddingTop: scale(4),
-                    color: !apiResponse.length ? '#fff' : '',
+                    color: !beneficiaries?.length ? '#fff' : '',
                   }}>
                   Add New Beneficiary
                 </Text>
@@ -160,32 +149,33 @@ export default function Beneficiary({navigation}) {
             </Text>
           </View>
 
-          {apiResponse.length ? (
-            <ScrollView
-              showsVerticalScrollIndicator={false}
-              contentContainerStyle={{
-                borderRadius: scale(8),
-                paddingVertical: scale(16),
-                flex: 1,
-                marginTop: scale(20),
-              }}>
-              {apiResponse.map((item, i) => {
-                return (
-                  <TouchableOpacity
-                    onPress={() => {
-                      setSelected(i);
-                      setBeneficiaryDetail(item);
-                    }}>
-                    <BeneficiaryContainer
-                      beneficiaryDetails={item}
-                      index={i}
-                      selected={selected}
-                      setSelected={setSelected}
-                    />
-                  </TouchableOpacity>
-                );
-              })}
-            </ScrollView>
+          {beneficiaries?.length ? (
+            <View style={{flex: 1}}>
+              <ScrollView
+                showsVerticalScrollIndicator={false}
+                contentContainerStyle={{
+                  borderRadius: scale(8),
+                  marginTop: scale(20),
+                }}>
+                {beneficiaries.map((item, i) => {
+                  return (
+                    <TouchableOpacity
+                      onPress={() => {
+                        setSelected(i);
+                        setBeneficiaryDetail(item);
+                        setShowConfirmTransfer(true);
+                      }}>
+                      <BeneficiaryContainer
+                        beneficiaryDetails={item}
+                        index={i}
+                        selected={selected}
+                        setSelected={setSelected}
+                      />
+                    </TouchableOpacity>
+                  );
+                })}
+              </ScrollView>
+            </View>
           ) : (
             <View
               style={{
@@ -211,18 +201,29 @@ export default function Beneficiary({navigation}) {
               </Text>
             </View>
           )}
-
-          <View>
-            <ConfirmTransfer
-              isModalOpen={showConfirmTransfer}
-              closeModal={() => {
-                setShowConfirmTransfer(false);
-              }}
-              data={beneficiaryDetail}
-            />
-          </View>
         </View>
       </View>
+      <View>
+        <ConfirmTransfer
+          isModalOpen={showConfirmTransfer}
+          closeModal={() => {
+            setShowConfirmTransfer(false);
+          }}
+          data={beneficiaryDetail}
+        />
+      </View>
+      <BeneficiaryModal
+        isModalOpen={beneficiaryModal}
+        closeModal={() => setBeneficiaryModal(false)}
+        fetchBeneficiaries={fetchBeneficiaries}
+        currencies={route.params?.currencies?.map(item => {
+          item.label = item.name;
+          item.value = item.id;
+          return item;
+        })}
+        countries={countries}
+        beneficiaries={beneficiaries}
+      />
       <Footer
         onFooterPressed={() => {
           navigation.goBack();
@@ -231,10 +232,7 @@ export default function Beneficiary({navigation}) {
         btnIcon="arrowRight"
         footerText="Go Back"
         footerIcon="arrowLeft"
-        onPress={() => {
-          setShowConfirmTransfer(true);
-        }}
-        disabled={apiResponse.length ? false : true}
+        disabled={beneficiaries?.length ? false : true}
       />
     </View>
   );

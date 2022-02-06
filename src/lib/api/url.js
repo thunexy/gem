@@ -29,3 +29,6 @@ export const allowedCountriesUrl = `${baseUrl}/countries/allowed-countries`;
 export const getStatesUrl = `${baseUrl}/countries/states`;
 export const getCurrenciesUrl = `${baseUrl}/countries/currencies`;
 export const rateUrl = `${baseUrl}/rate/convert`;
+export const fetchBeneficiariesUrl = `${baseUrl}/beneficiary/view`;
+export const saveBeneficiaryUrl = `${baseUrl}/beneficiary/create`;
+export const fetchBanksUrl = `${baseUrl}/fund/banks`

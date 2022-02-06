@@ -1,6 +1,7 @@
 import React, {useEffect, useState} from 'react';
 import {ScrollView, View} from 'react-native';
 import SimpleToast from 'react-native-simple-toast';
+import {useSelector} from 'react-redux';
 import {onboarding, text} from '../../../assets/styles/styles';
 import Footer from '../../components/Footer/Footer';
 import Nav from '../../components/HeaderNav/Nav';
@@ -9,9 +10,8 @@ import Picker from '../../components/Input/Picker';
 import Text from '../../components/Text/Text';
 import {apiRequest} from '../../lib/api/api';
 import {
-  allowedCountriesUrl,
+  fetchBeneficiariesUrl,
   getCurrenciesUrl,
-  getStatesUrl,
   rateUrl,
 } from '../../lib/api/url';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
@@ -33,7 +33,9 @@ export default function ReceiveAmount({navigation, route}) {
   const [loading, setLoading] = useState({
     allowedCountries: false,
     rate: false,
+    beneficiaries: false,
   });
+  const auth = useSelector(state => state.authentication);
   const getRate = () => {
     setLoading(prev => ({...prev, rate: true}));
     apiRequest(rateUrl, 'post', {
@@ -51,6 +53,31 @@ export default function ReceiveAmount({navigation, route}) {
         ),
       )
       .finally(() => setLoading(prev => ({...prev, rate: false})));
+  };
+  const fetchBeneficiaries = () => {
+    setLoading(prev => ({...prev, beneficiaries: true}));
+    apiRequest(
+      `${fetchBeneficiariesUrl}?Type=${
+        destination === 'Gen User' ? 'GEN' : 'OTHERS'
+      }&EmailAddress=${auth.customer?.email_address}`,
+      'get',
+    )
+      .then(response => {
+        navigation.navigate('Beneficiary', {
+          beneficiaries: response.data,
+          destination,
+          currencies,
+        });
+      })
+      .catch(e => {
+        SimpleToast.show(
+          e.response?.data?.message || e.message,
+          SimpleToast.LONG,
+        );
+      })
+      .finally(() => {
+        setLoading(prev => ({...prev, beneficiaries: false}));
+      });
   };
   const getCurrencies = () => {
     setLoading(prev => ({...prev, allowedCountries: true}));
@@ -109,7 +136,7 @@ export default function ReceiveAmount({navigation, route}) {
                   }}>
                   {loading.rate
                     ? '...'
-                    : `₦${rate?.amount}`
+                    : `₦${rate?.amount ?? 0}`
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
@@ -154,7 +181,11 @@ export default function ReceiveAmount({navigation, route}) {
                   loading.allowedCountries ? 'Loading currencies' : currency
                 }
                 onValueChange={setCurrency}
-                info={`Exchange rate: ${rate?.to_currency}${rate?.rate}/${rate?.from_currency}1`}
+                info={
+                  rate?.to_currency
+                    ? `Exchange rate: ${rate?.to_currency}${rate?.rate}/${rate?.from_currency}1`
+                    : ''
+                }
                 disabled
                 onPress={() => setCurrencyModal(true)}
               />
@@ -223,7 +254,11 @@ export default function ReceiveAmount({navigation, route}) {
         btnIcon="arrowRight"
         footerText="Go back"
         footerIcon="arrowLeft"
-        disabled={!destination || !currency}
+        onPress={fetchBeneficiaries}
+        disabled={
+          !destination || !currency || loading.beneficiaries || loading.rate
+        }
+        loading={loading.beneficiaries}
       />
     </View>
   );
