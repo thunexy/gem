@@ -1,8 +1,8 @@
 import React, {useRef, useState} from 'react';
 import {Keyboard, StyleSheet, Text, View} from 'react-native';
-import { text } from '../../../assets/styles/styles';
+import {text} from '../../../assets/styles/styles';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
-import { IconGen } from '../IconGenerator/IconGenerator';
+import {IconGen} from '../IconGenerator/IconGenerator';
 import Input from './Input';
 export default function PinInputs({error, handlePin}) {
   const [input, setInput] = useState([]);

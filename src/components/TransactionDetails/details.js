@@ -8,6 +8,8 @@ export default function Details({
   exchangeRate,
   amountToPay,
   amountToReceive,
+  arrival = false,
+  estimatedTime = ""
 }) {
   return (
     <View style={s.firstView}>
@@ -15,11 +17,17 @@ export default function Details({
         <Text style={{fontFamily: text.helonik}}>Processing fee</Text>
         <Text style={{fontFamily: text.helonikBold}}>{processingFee}</Text>
       </View>
-
-      <View style={s.secondView}>
-        <Text style={{fontFamily: text.helonik}}>Exchange Rate</Text>
-        <Text style={{fontFamily: text.helonikBold}}>{exchangeRate}</Text>
-      </View>
+      {arrival ? (
+        <View style={s.secondView}>
+          <Text style={{fontFamily: text.helonik}}>Estimated Time of Arrival</Text>
+          <Text style={{fontFamily: text.helonikBold}}>{estimatedTime}</Text>
+        </View>
+      ) : (
+        <View style={s.secondView}>
+          <Text style={{fontFamily: text.helonik}}>Exchange Rate</Text>
+          <Text style={{fontFamily: text.helonikBold}}>{exchangeRate}</Text>
+        </View>
+      )}
 
       <View style={s.secondView}>
         <Text style={{fontFamily: text.helonik}}>Amount you pay</Text>

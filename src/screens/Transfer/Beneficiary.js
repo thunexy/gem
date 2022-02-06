@@ -15,54 +15,79 @@ import ConfirmTransfer from './components/ConfirmTransfer';
 // import RadioForm, {RadioButton} from 'react-native-simple-radio-button';
 
 export default function Beneficiary({navigation}) {
-  const [beneficiaryDetail, setBeneficiaryDetail] = useState({});
-  const [showConfirmTransfer , setShowConfirmTransfer] = useState(false);
+    const [showConfirmTransfer, setShowConfirmTransfer] = useState(false);
   const apiResponse = [
-    {
+      {
       email_address: 'chukwuka123@yahoo.com',
       first_name: 'Chukwuka',
       last_name: 'Ezeoke Joseph',
       avatar: '',
+      processingFee: '0 USD',
+      estimatedTime: '1-2 business days',
+      amountToPay: '9,150,000.00',
+      amountToRecieve: '9,150,000.00',
     },
     {
       email_address: 'princesscilla@gmail.com',
       first_name: 'Priscilla',
       last_name: 'Agbam',
       avatar: '',
+      processingFee: '0 USD',
+      estimatedTime: '1-2 business days',
+      amountToPay: '9,150,000.00',
+      amountToRecieve: '9,150,000.00',
     },
     {
       email_address: 'princesscilla@gmail.com',
       first_name: 'Priscilla',
       last_name: 'Agbam',
       avatar: '',
+      processingFee: '0 USD',
+      estimatedTime: '1-2 business days',
+      amountToPay: '9,150,000.00',
+      amountToRecieve: '9,150,000.00',
     },
     {
-      email_address: 'princesscilla@gmail.com',
+        email_address: 'princesscilla@gmail.com',
+        first_name: 'Priscilla',
+        last_name: 'Agbam',
+        avatar: '',
+        processingFee: '0 USD',
+        estimatedTime: '1-2 business days',
+        amountToPay: '9,150,000.00',
+        amountToRecieve: '9,150,000.00',
+    },
+    {
+        email_address: 'princesscilla@gmail.com',
+        first_name: 'Priscilla',
+        last_name: 'Agbam',
+        avatar: '',
+        processingFee: '0 USD',
+        estimatedTime: '1-2 business days',
+        amountToPay: '9,150,000.00',
+        amountToRecieve: '9,150,000.00',
+    },
+    {
+        email_address: 'princesscilla@gmail.com',
       first_name: 'Priscilla',
       last_name: 'Agbam',
       avatar: '',
-    },
-    {
-      email_address: 'princesscilla@gmail.com',
-      first_name: 'Priscilla',
-      last_name: 'Agbam',
-      avatar: '',
-    },
-    {
-      email_address: 'princesscilla@gmail.com',
-      first_name: 'Priscilla',
-      last_name: 'Agbam',
-      avatar: '',
+      processingFee: '0 USD',
+      estimatedTime: '1-2 business days',
+      amountToPay: '9,150,000.00',
+      amountToRecieve: '9,150,000.00',
     },
   ];
   const initialState = {
-    email_address: '',
-    first_name: '',
-    last_name: '',
-  };
+      email_address: '',
+      first_name: '',
+      last_name: '',
+    };
+    
+    const [state, setState] = useState(initialState);
+    const [selected, setSelected] = useState(0);
+    const [beneficiaryDetail, setBeneficiaryDetail] = useState(apiResponse.length ? apiResponse[0] : {});
 
-  const [state, setState] = useState(initialState);
-  const [selected, setSelected] = useState(0);
   const [searchText, setSearchText] = useState('');
   return (
     <View style={onboarding.container}>
@@ -150,7 +175,6 @@ export default function Beneficiary({navigation}) {
                     onPress={() => {
                       setSelected(i);
                       setBeneficiaryDetail(item);
-                      setShowConfirmTransfer(true);
                     }}>
                     <BeneficiaryContainer
                       beneficiaryDetails={item}
@@ -189,11 +213,13 @@ export default function Beneficiary({navigation}) {
           )}
 
           <View>
-              <ConfirmTransfer 
-                  isModalOpen={showConfirmTransfer}
-                  closeModal= {() => {setShowConfirmTransfer(false)}}
-                  data = {beneficiaryDetail}
-              />
+            <ConfirmTransfer
+              isModalOpen={showConfirmTransfer}
+              closeModal={() => {
+                setShowConfirmTransfer(false);
+              }}
+              data={beneficiaryDetail}
+            />
           </View>
         </View>
       </View>
@@ -205,6 +231,9 @@ export default function Beneficiary({navigation}) {
         btnIcon="arrowRight"
         footerText="Go Back"
         footerIcon="arrowLeft"
+        onPress={() => {
+          setShowConfirmTransfer(true);
+        }}
         disabled={apiResponse.length ? false : true}
       />
     </View>

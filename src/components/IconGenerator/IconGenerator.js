@@ -43,6 +43,7 @@ import {Location} from '../../../assets/svgs/location';
 import {AddBenSvg} from '../../../assets/svgs/addBen';
 import {CheckBoxFilled} from '../../../assets/svgs/CheckBoxFilled';
 import {CheckBox} from "../../../assets/svgs/CheckBox";
+import {ArrowInclinedTopRight} from "../../../assets/svgs/arrowInclinedTopRight";
 
 const components = {
   activity: Activity,
@@ -90,7 +91,8 @@ const components = {
   user: User,
   addbensvg: AddBenSvg,
   checkboxfilled: CheckBoxFilled,
-  checkbox: CheckBox
+  checkbox: CheckBox,
+  arrowInclinedTopRight: ArrowInclinedTopRight
 };
 
 export const IconGen = props => {
