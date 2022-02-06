@@ -2,7 +2,7 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {text} from '../../../assets/styles/styles';
 import {moderateScale, scale, verticalScale} from '../../lib/utils/scaleUtils';
-export default function FundingText({amount, hideBorder}) {
+export default function FundingText({amount, hideBorder, style = {}}) {
   return (
     <View
       style={{
@@ -13,6 +13,7 @@ export default function FundingText({amount, hideBorder}) {
         borderColor: '#F4F4F6',
         borderBottomWidth: scale(hideBorder ? 0 : 1.6),
         paddingHorizontal: scale(24),
+        ...style
       }}>
       <View
         style={{

@@ -31,7 +31,7 @@ export default function DashboardNavigator(props) {
       <HomeStack.Screen
         name="Home"
         component={HomeNavigator}
-        initialParams={{backgroundColor: '#FFFFFF'}}
+        initialParams={{ backgroundColor: '#FFFFFF' }}
         options={() => ({
           tabBarLabel: 'Home',
           tabBarLabelStyle: {fontFamily: text.helonik},

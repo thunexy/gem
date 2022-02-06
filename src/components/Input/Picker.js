@@ -1,59 +1,66 @@
 import React from 'react';
-import {StyleSheet, Text, View} from 'react-native';
-import {Picker as RNPicker} from '@react-native-picker/picker';
+import {
+  StyleSheet,
+  Text as RNText,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
+import RNPicker from 'react-native-picker-select';
 import {text} from '../../../assets/styles/styles';
 import {moderateScale, scale, verticalScale} from '../../lib/utils/scaleUtils';
 import {IconGen} from '../IconGenerator/IconGenerator';
-const Picker = React.forwardRef(
-  (
-    {
-      label,
-      value,
-      isRequired = true,
-      style: customStyle,
-      error,
-      showError,
-      onValueChange,
-      type,
-      data = [],
-    },
-    ref,
-  ) => {
-    return (
-      <View style={[customStyle]}>
-        {label && (
-          <Text style={style.label}>
-            {label}
-            {isRequired && <Text style={style.asterisks}>*</Text>}
-          </Text>
-        )}
-        <View
-          style={{
-            backgroundColor: '#F8F5FF',
-            borderTopLeftRadius: scale(8),
-            borderBottomLeftRadius: scale(8),
-            paddingHorizontal: scale(16),
-          }}>
+import Text from '../Text/Text';
+const Picker = ({
+  label,
+  value,
+  isRequired = true,
+  style: customStyle,
+  info,
+  onValueChange,
+  onPress = () => {},
+  disabled,
+  data = [],
+  placeholder = '',
+}) => {
+  return (
+    <View style={[customStyle]}>
+      {label && (
+        <RNText style={style.label}>
+          {label}
+          {isRequired && <RNText style={style.asterisks}>*</RNText>}
+        </RNText>
+      )}
+      <TouchableOpacity
+        onPress={onPress}
+        style={{
+          borderRadius: scale(8),
+          borderWidth: scale(1),
+          marginBottom: scale(2),
+          paddingHorizontal: scale(16),
+        }}>
+        {disabled ? (
+          <TextInput editable={false} placeholder={placeholder} />
+        ) : (
           <RNPicker
             style={{
               fontSize: moderateScale(16),
             }}
-            useNativeAndroidPickerStyle={true}
+            useNativeAndroidPickerStyle={false}
             value={value}
             onValueChange={onValueChange}
             items={data}
           />
+        )}
+        <View
+          style={{position: 'absolute', right: scale(10), bottom: scale(10)}}>
+          <IconGen tag="ChevronRight" colour={'#0E093F'} />
         </View>
-        {showError && !type ? (
-          <View style={style.errorContainer}>
-            <IconGen tag="error" />
-            <Text style={style.error}>{error}</Text>
-          </View>
-        ) : null}
-      </View>
-    );
-  },
-);
+      </TouchableOpacity>
+      {info && <Text size="h6">{info}</Text>}
+    </View>
+  );
+};
 
 export default Picker;
 
