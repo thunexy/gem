@@ -6,6 +6,7 @@ import Modal from 'react-native-modal';
 import {bottomModalStyle} from '../../../assets/styles/styles';
 import {scale} from '../../lib/utils/scaleUtils';
 import {IconGen} from '../IconGenerator/IconGenerator';
+import BeneficiaryContainer from '../BeneficiaryContainer/BeneficiaryContainer';
 
 const BottomModal = ({
   isModalOpen,

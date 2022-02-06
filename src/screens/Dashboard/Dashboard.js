@@ -211,7 +211,7 @@ export function Dashboard({navigation}) {
                 <QuickActions
                   icon={'transfer'}
                   text="Transfer"
-                  onPress={() => navigation.navigate('TransferAmount')}
+                  onPress={() => navigation.navigate('Beneficiary')}
                 />
                 <QuickActions icon={'request'} text="Request" />
                 <QuickActions icon={'beneficiary'} text="Beneficiaries" />

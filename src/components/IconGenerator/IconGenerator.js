@@ -37,9 +37,12 @@ import {Request} from '../../../assets/svgs/request';
 import {Beneficiaries} from '../../../assets/svgs/beneficiaries';
 import {Debit} from '../../../assets/svgs/debit';
 import {Credit} from '../../../assets/svgs/credit';
-import { Edit } from '../../../assets/svgs/edit';
+import {Edit} from '../../../assets/svgs/edit';
 import {Search} from '../../../assets/svgs/search';
 import {Location} from '../../../assets/svgs/location';
+import {AddBenSvg} from '../../../assets/svgs/addBen';
+import {CheckBoxFilled} from '../../../assets/svgs/CheckBoxFilled';
+import {CheckBox} from "../../../assets/svgs/CheckBox";
 
 const components = {
   activity: Activity,
@@ -85,6 +88,9 @@ const components = {
   transfer: Transfer,
   upload: Upload,
   user: User,
+  addbensvg: AddBenSvg,
+  checkboxfilled: CheckBoxFilled,
+  checkbox: CheckBox
 };
 
 export const IconGen = props => {
