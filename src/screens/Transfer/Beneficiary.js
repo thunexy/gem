@@ -31,6 +31,8 @@ export default function Beneficiary({navigation, route}) {
   const [showConfirmTransfer, setShowConfirmTransfer] = useState(false);
   const [selected, setSelected] = useState(0);
   const [searchText, setSearchText] = useState('');
+  const [allBeneficiaries, setAllBeneficiaries] = useState(beneficiaries);
+  const [searchError, setSearchError] = useState(false);
 
   const auth = useSelector(state => state.authentication);
   const fetchBeneficiaries = () => {
@@ -41,6 +43,7 @@ export default function Beneficiary({navigation, route}) {
       'get',
     )
       .then(response => {
+        setAllBeneficiaries(response.data);
         setBeneficiaries(response.data);
       })
       .catch(e => {
@@ -76,6 +79,39 @@ export default function Beneficiary({navigation, route}) {
     fetchCountries();
   }, []);
 
+  useEffect(() => {
+    const searchResult = [];
+    //  this if statement will not hit unless the searchText is empty
+    // it's also there to fetch the data once there is no search found
+    if (searchError && !beneficiaries.length && !searchText.length) {
+      setBeneficiaries(allBeneficiaries);
+      setSearchError(false);
+    }
+
+    if (searchText.length > 2) {
+      allBeneficiaries.length
+        ? allBeneficiaries.map((item, i) => {
+            // combine the last name and the first name to enhance proper search
+            const nameCombined = item.first_name + item.last_name;
+            if (
+              item.beneficiary_customer_email
+                .toLowerCase()
+                .includes(searchText.toLowerCase()) ||
+              nameCombined.toLowerCase().includes(searchText.toLowerCase())
+            ) {
+              searchResult.push(item);
+            }
+          })
+        : '';
+
+      if (searchResult.length) {
+        setBeneficiaries(searchResult);
+      } else {
+        setSearchError(true);
+        setBeneficiaries([]);
+      }
+    }
+  }, [searchText]);
   return (
     <View style={onboarding.container}>
       <View style={{backgroundColor: '#CFBEFF', flex: 1}}>
@@ -127,7 +163,7 @@ export default function Beneficiary({navigation, route}) {
                 borderWidth: 1,
                 borderRadius: scale(12),
                 paddingVertical: scale(14),
-                backgroundColor: !beneficiaries?.length ? '#8960FF' : 'none',
+                backgroundColor: !beneficiaries?.length ? '#8960FF' : '#fff',
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text style={{marginRight: scale(8), color: '#fff'}}>
@@ -141,7 +177,7 @@ export default function Beneficiary({navigation, route}) {
                   style={{
                     fontFamily: text.helonikBold,
                     paddingTop: scale(4),
-                    color: !beneficiaries?.length ? '#fff' : '',
+                    color: !beneficiaries?.length ? '#fff' : '#0E093F',
                   }}>
                   Add New Beneficiary
                 </Text>
@@ -175,6 +211,15 @@ export default function Beneficiary({navigation, route}) {
                   );
                 })}
               </ScrollView>
+            </View>
+          ) : searchError ? (
+            <View
+              style={{
+                justifyContent: 'center',
+                alignItems: 'center',
+                paddingTop: scale(50),
+              }}>
+              <Text styl={{textAlign: 'center'}}>No Search Found</Text>
             </View>
           ) : (
             <View

@@ -12,6 +12,7 @@ import PinInputs from '../../../components/Input/PinInputs';
 
 export default function SetPin({isModalOpen, closeModal, data}) {
   const [oneTimePin, setOneTimePin] = useState([]);
+  const [success , setSuccess] = useState(false);
   const [error, setError] = useState('');
   return (
     <BottomModal
@@ -21,7 +22,7 @@ export default function SetPin({isModalOpen, closeModal, data}) {
       showCloseIcon={false}>
       <View>
         <Nav
-          description="Your transaction PIN will used to approve transfers and payments on Gen. Do not share this PIN with anyone."
+          description="Your transaction PIN will be used to approve transfers and payments on Gen. Do not share this PIN with anyone."
           title="Set transaction PIN"
           onClose={closeModal}
         />
@@ -36,10 +37,15 @@ export default function SetPin({isModalOpen, closeModal, data}) {
         </View>
 
         <Footer 
+            onPress={() => {
+                setSuccess(true)
+            }}
             btnText="Set Pin & finish transfer"
             btnIcon="arrowRight"
         />
       </View>
+
+      
     </BottomModal>
   );
 }

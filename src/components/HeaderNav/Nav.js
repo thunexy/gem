@@ -3,7 +3,7 @@ import {Text, TouchableOpacity, View} from 'react-native';
 import {onboarding, text} from '../../../assets/styles/styles';
 import {moderateScale, scale} from '../../lib/utils/scaleUtils';
 import {IconGen} from '../IconGenerator/IconGenerator';
-export default function Nav({onClose, description, title, noPadding}) {
+export default function Nav({onClose, description, title, noPadding , noBorder = false}) {
   return (
     <View
       style={{
@@ -25,8 +25,8 @@ export default function Nav({onClose, description, title, noPadding}) {
       <View
         style={{
           paddingHorizontal: scale(24),
-          borderBottomColor: '#F4F4F6',
-          borderBottomWidth: scale(1),
+          borderBottomColor: noBorder ? "#fff" : '#F4F4F6',
+          borderBottomWidth: noBorder? scale(0) : scale(1),
         }}>
         <Text
           style={[
