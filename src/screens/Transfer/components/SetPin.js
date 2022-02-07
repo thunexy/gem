@@ -64,6 +64,8 @@ export default function SetPin({
           onPress={() => handleTransfer(pin.join(''))}
         />
       </View>
+
+      
     </BottomModal>
   );
 }
