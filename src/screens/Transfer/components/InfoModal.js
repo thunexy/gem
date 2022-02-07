@@ -25,7 +25,7 @@ export default function InfoModal({
       />
       <TransactionDetails
         processingFee={'0 USD'}
-        exchangeRate={exchangeRate}
+        exchangeRate={exchangeRate }
         amountToPay={amountPaid}
         amountToReceive={amountReceived}
       />

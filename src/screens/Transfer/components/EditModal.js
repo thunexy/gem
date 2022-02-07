@@ -10,6 +10,7 @@ export default function EditModal({
   isModalOpen,
   amount,
   setAmount,
+  currency,
   closeModal,
 }) {
   return (
@@ -36,6 +37,7 @@ export default function EditModal({
       <Funding
         amount={amount}
         setAmount={setAmount}
+        currency={currency}
         textStyle={{marginTop: scale(20)}}
       />
     </BottomModal>

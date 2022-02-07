@@ -31,4 +31,5 @@ export const getCurrenciesUrl = `${baseUrl}/countries/currencies`;
 export const rateUrl = `${baseUrl}/rate/convert`;
 export const fetchBeneficiariesUrl = `${baseUrl}/beneficiary/view`;
 export const saveBeneficiaryUrl = `${baseUrl}/beneficiary/create`;
-export const fetchBanksUrl = `${baseUrl}/fund/banks`
+export const fetchBanksUrl = `${baseUrl}/fund/banks`;
+export const sendMoneyUrl = `${baseUrl}/send/money`;

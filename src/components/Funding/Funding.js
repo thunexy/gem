@@ -4,10 +4,10 @@ import {text} from '../../../assets/styles/styles';
 import {scale} from '../../lib/utils/scaleUtils';
 import {IconGen} from '../IconGenerator/IconGenerator';
 import FundingText from './FundingText';
-export default function Funding({amount, setAmount, textStyle = {}}) {
+export default function Funding({amount, setAmount, currency, textStyle = {}}) {
   return (
     <View style={{flex: 1, marginBottom: scale(40)}}>
-      <FundingText amount={amount} style={textStyle} />
+      <FundingText amount={amount} style={textStyle} currency={currency} />
       <View
         style={{
           flexDirection: 'row',

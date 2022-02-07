@@ -9,6 +9,7 @@ const Text = ({
   style = {},
   children,
   onPress = () => {},
+  ...others
 }) => {
   const fonts = {
     h1: {
@@ -43,7 +44,10 @@ const Text = ({
     },
   };
   return (
-    <RNText onPress={onPress} style={{...fonts[size], color, ...style}}>
+    <RNText
+      onPress={onPress}
+      {...others}
+      style={{...fonts[size], color, ...style}}>
       {children}
     </RNText>
   );

@@ -43,11 +43,10 @@ export default function HomeNavigator(props) {
       <HomeStack.Screen name="SelectCountry" component={SelectCountry} />
       <HomeStack.Screen name="Beneficiary" component={Beneficiary} />
 
-      
       <HomeStack.Screen
         name="Dashboard"
         component={Dashboard}
-        initialParams={{backgroundColor: '#FFFFFF'}}
+        initialParams={{backgroundColor: '#CFBEFF'}}
       />
 
       <HomeStack.Screen

@@ -13,7 +13,6 @@ export default function DestinationModal({
   data,
   closeModal = () => {},
 }) {
-  console.log(destination);
   return (
     <BottomModal
       isModalOpen={isModalOpen}
