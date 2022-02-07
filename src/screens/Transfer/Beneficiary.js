@@ -130,20 +130,19 @@ export default function Beneficiary({navigation, route}) {
                 backgroundColor: !beneficiaries?.length ? '#8960FF' : 'none',
               }}>
               <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                <Text style={{marginRight: scale(8), color: '#fff'}}>
-                  <IconGen
-                    tag="addbensvg"
-                    color={!beneficiaries?.length ? '#fff' : '#6939FF'}
-                  />
-                </Text>
+                <IconGen
+                  tag="addbensvg"
+                  color={!beneficiaries?.length ? '#fff' : '#6939FF'}
+                />
 
                 <Text
                   style={{
                     fontFamily: text.helonikBold,
+                    marginLeft: scale(8),
                     paddingTop: scale(4),
                     color: !beneficiaries?.length ? '#fff' : '',
                   }}>
-                  Add New Beneficiary
+                  Add new Gen beneficiary
                 </Text>
               </View>
             </Text>

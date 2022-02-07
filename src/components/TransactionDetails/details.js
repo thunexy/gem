@@ -19,31 +19,50 @@ export default function Details({
         borderColor: arrival ? '#F4F4F6' : '#fff',
       }}>
       <View style={s.secondView}>
-        <Text style={{fontFamily: text.helonik}}>Processing fee</Text>
-        <Text style={{fontFamily: text.helonikBold}}>0 USD</Text>
+        <Text style={{fontFamily: text.helonik, color: '#0E093F'}}>
+          Processing fee
+        </Text>
+        <Text style={{fontFamily: text.helonikBold, color: '#0E093F'}}>
+          0 USD
+        </Text>
       </View>
       {arrival ? (
         <View style={s.secondView}>
-          <Text style={{fontFamily: text.helonik}}>
+          <Text style={{fontFamily: text.helonik, color: '#0E093F'}}>
             Estimated Time of Arrival
           </Text>
-          <Text style={{fontFamily: text.helonikBold}}>1-2 business days</Text>
+          <Text style={{fontFamily: text.helonikBold, color: '#0E093F'}}>
+            1-2 business days
+          </Text>
         </View>
       ) : (
         <View style={s.secondView}>
-          <Text style={{fontFamily: text.helonik}}>Exchange Rate</Text>
-          <Text style={{fontFamily: text.helonikBold}}>{exchangeRate}</Text>
+          <Text style={{fontFamily: text.helonik, color: '#0E093F'}}>
+            Exchange Rate
+          </Text>
+          <Text style={{fontFamily: text.helonikBold, color: '#0E093F'}}>
+            {exchangeRate}
+          </Text>
         </View>
       )}
 
       <View style={s.secondView}>
-        <Text style={{fontFamily: text.helonik}}>Amount you pay</Text>
-        <Text style={{fontFamily: text.helonikBold}}> {amountToPay}</Text>
+        <Text style={{fontFamily: text.helonik, color: '#0E093F'}}>
+          Amount you pay
+        </Text>
+        <Text style={{fontFamily: text.helonikBold, color: '#0E093F'}}>
+          {' '}
+          {amountToPay}
+        </Text>
       </View>
 
       <View style={s.secondView}>
-        <Text style={{fontFamily: text.helonik}}>Amount recipient gets</Text>
-        <Text style={{fontFamily: text.helonikBold}}>{amountToReceive}</Text>
+        <Text style={{fontFamily: text.helonik, color: '#0E093F'}}>
+          Amount recipient gets
+        </Text>
+        <Text style={{fontFamily: text.helonikBold, color: '#0E093F'}}>
+          {amountToReceive}
+        </Text>
       </View>
     </View>
   );
