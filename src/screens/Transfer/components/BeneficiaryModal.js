@@ -161,6 +161,7 @@ export default function BeneficiaryModal({
   };
 
   useEffect(fetchBanks, []);
+  console.log(currencies, typeof selectedCurrency, 'here');
   return (
     <BottomModal
       isModalOpen={isModalOpen}
@@ -345,7 +346,7 @@ export default function BeneficiaryModal({
                 onValueChange={setSelectedAccount}
               />
             </>
-          ) : step === 2 && selectedAccount === 'SAVINGS' ? (
+          ) : step === 2 && selectedCurrency !== 5 ? (
             <>
               <Input
                 label="Account number"

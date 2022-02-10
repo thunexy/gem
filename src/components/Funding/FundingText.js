@@ -8,6 +8,7 @@ export default function FundingText({
   style = {},
   currency,
 }) {
+  console.log((+amount / 1).toFixed(2));
   return (
     <View
       style={{
@@ -44,7 +45,7 @@ export default function FundingText({
             fontSize: moderateScale(96),
             fontFamily: text.helonik,
           }}>
-          {`${(+amount / 1).toFixed(2)}`
+          {`${(+amount.toString().split(',').join('') / 1).toFixed(2)}`
             .toString()
             .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>

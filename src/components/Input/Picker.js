@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   Text as RNText,
@@ -23,6 +23,7 @@ const Picker = ({
   data = [],
   placeholder = '',
 }) => {
+  const [activeIndex, setActiveIndex] = useState(0);
   return (
     <View style={[customStyle]}>
       {label ? (
@@ -55,7 +56,25 @@ const Picker = ({
             }}
             useNativeAndroidPickerStyle={false}
             value={value}
-            onValueChange={onValueChange}
+            children={
+              <View
+                style={{
+                  height: scale(44),
+                  justifyContent: 'center',
+                }}>
+                <Text
+                  style={{
+                    fontFamily: text.helonik,
+                    fontSize: moderateScale(16),
+                  }}>
+                  {data?.[activeIndex - 1]?.label}
+                </Text>
+              </View>
+            }
+            onValueChange={(value, index) => {
+              onValueChange(value);
+              setActiveIndex(index);
+            }}
             items={data}
           />
         )}

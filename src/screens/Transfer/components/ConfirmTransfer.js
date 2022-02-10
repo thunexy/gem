@@ -113,7 +113,7 @@ export default function ConfirmTransfer({
             </View>
             <View style={{marginTop: scale(8)}}>
               <FundingText
-                amount={`${data?.amount}`
+                amount={`${data?.amount / 100}`
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 hideBorder={true}
@@ -191,13 +191,13 @@ export default function ConfirmTransfer({
                 processingFee={data?.processingFee}
                 estimatedTime={data?.estimatedTime}
                 amountToPay={
-                  `${data?.amount}`
+                  `${(data?.amount / 100).toFixed(2)}`
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
                   ` ${data?.rate?.from_currency}`
                 }
                 amountToReceive={
-                  `${data?.rate?.amount}`
+                  `${(data?.rate?.amount / 1).toFixed(2)}`
                     .toString()
                     .replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
                   ` ${data?.rate?.to_currency}`

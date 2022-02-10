@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useEffect, useState} from 'react';
 import {View} from 'react-native';
 import BottomModal from '../../../components/BottomModal/BottomModal';
 import Funding from '../../../components/Funding/Funding';
@@ -13,6 +13,11 @@ export default function EditModal({
   currency,
   closeModal,
 }) {
+  const [temp, setTemp] = useState(0);
+
+  useEffect(() => {
+    isModalOpen && setTemp(amount);
+  }, [isModalOpen]);
   return (
     <BottomModal
       isModalOpen={isModalOpen}
@@ -31,12 +36,20 @@ export default function EditModal({
         <Text size="h1" color="#0E093F" style={{flex: 1}}>
           Edit send amount
         </Text>
-        <IconGen tag="check" color="#8960FF" size={2.5} onPress={closeModal} />
+        <IconGen
+          tag="check"
+          color="#8960FF"
+          size={2.5}
+          onPress={() => {
+            setAmount(temp);
+            closeModal();
+          }}
+        />
       </View>
 
       <Funding
-        amount={amount}
-        setAmount={setAmount}
+        amount={temp}
+        setAmount={setTemp}
         currency={currency}
         textStyle={{marginTop: scale(20)}}
       />

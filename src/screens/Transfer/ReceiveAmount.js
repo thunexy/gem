@@ -131,7 +131,6 @@ export default function ReceiveAmount({navigation, route}) {
     ['ZAR', 'R'],
   ]);
 
-  console.log(receiptAmount);
   return (
     <View style={onboarding.container}>
       <View style={{backgroundColor: '#F7C57C', flex: 1}}>
