@@ -2,7 +2,12 @@ import React from 'react';
 import {Text, View} from 'react-native';
 import {text} from '../../../assets/styles/styles';
 import {moderateScale, scale, verticalScale} from '../../lib/utils/scaleUtils';
-export default function FundingText({amount, hideBorder, style = {}, currency}) {
+export default function FundingText({
+  amount,
+  hideBorder,
+  style = {},
+  currency,
+}) {
   return (
     <View
       style={{
@@ -13,7 +18,7 @@ export default function FundingText({amount, hideBorder, style = {}, currency}) 
         borderColor: '#F4F4F6',
         borderBottomWidth: scale(hideBorder ? 0 : 1.6),
         paddingHorizontal: scale(24),
-        ...style
+        ...style,
       }}>
       <View
         style={{
@@ -29,7 +34,7 @@ export default function FundingText({amount, hideBorder, style = {}, currency}) 
             marginTop: moderateScale(`${+amount}`.length > 8 ? 8 : 16),
             fontFamily: text.helonik,
           }}>
-          $
+          {currency || '$'}
         </Text>
         <Text
           numberOfLines={1}
@@ -39,7 +44,9 @@ export default function FundingText({amount, hideBorder, style = {}, currency}) 
             fontSize: moderateScale(96),
             fontFamily: text.helonik,
           }}>
-          {`${+amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+          {`${(+amount / 1).toFixed(2)}`
+            .toString()
+            .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
         </Text>
       </View>
     </View>

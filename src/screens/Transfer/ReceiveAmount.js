@@ -21,7 +21,8 @@ import EditModal from './components/EditModal';
 import InfoModal from './components/InfoModal';
 
 export default function ReceiveAmount({navigation, route}) {
-  const [amount, setAmount] = useState(route.params?.amount);
+  const [amount, setAmount] = useState((+route.params?.amount / 1).toFixed(2));
+  const [receiptAmount, setReceiptAmount] = useState(null);
   const [rate, setRate] = useState(null);
   const [currency, setCurrency] = useState(route.params?.rate?.to_currency);
   const [editModal, setEditModal] = useState(false);
@@ -54,12 +55,13 @@ export default function ReceiveAmount({navigation, route}) {
   const getRate = () => {
     setLoading(prev => ({...prev, rate: true}));
     apiRequest(rateUrl, 'post', {
-      amount,
+      amount: amount / 100,
       from_currency_name: 'USD',
       to_currency_name: currency,
     })
       .then(response => {
         setRate(response.data);
+        setReceiptAmount((+response.data.amount * 100).toFixed(0));
       })
       .catch(e =>
         SimpleToast.show(
@@ -116,8 +118,20 @@ export default function ReceiveAmount({navigation, route}) {
     getCurrencies();
   }, []);
   useEffect(() => {
-    getRate();
-  }, [amount, currency]);
+    editType === 'from' && getRate();
+  }, [amount, currency, editModal]);
+
+  useEffect(() => {
+    editType === 'to' && setAmount((receiptAmount / rate.rate).toFixed(0));
+  }, [receiptAmount]);
+
+  const currencyMap = new Map([
+    ['USD', '$'],
+    ['NGN', '₦'],
+    ['ZAR', 'R'],
+  ]);
+
+  console.log(receiptAmount);
   return (
     <View style={onboarding.container}>
       <View style={{backgroundColor: '#F7C57C', flex: 1}}>
@@ -156,16 +170,23 @@ export default function ReceiveAmount({navigation, route}) {
                   }}>
                   {loading.rate
                     ? '...'
-                    : `₦${rate?.amount ?? 0}`
+                    : `${currencyMap.get(rate?.to_currency)}${
+                        (+receiptAmount / 100).toFixed(2) ?? 0
+                      }`
                         .toString()
                         .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
                 </Text>
+
                 <IconGen
                   tag="edit"
-                  onPress={() => {
-                    setEditModal(true);
-                    setEditType('to');
-                  }}
+                  onPress={
+                    receiptAmount
+                      ? () => {
+                          setEditModal(true);
+                          setEditType('to');
+                        }
+                      : () => {}
+                  }
                 />
               </View>
             </View>
@@ -179,9 +200,14 @@ export default function ReceiveAmount({navigation, route}) {
                 borderBottomWidth: scale(1),
                 alignItems: 'center',
               }}>
-              <Text color="#0E093F" size="h3" style={{alignItems: 'center'}}>
-                You’re sending: $
-                {`${+amount}`.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
+              <Text
+                color="#0E093F"
+                size="h3"
+                style={{alignItems: 'center', flex: 1}}>
+                You're sending: $
+                {`${(+amount / 100).toFixed(2)}`
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}{' '}
                 <Text
                   onPress={() => {
                     setEditModal(true);
@@ -260,10 +286,9 @@ export default function ReceiveAmount({navigation, route}) {
       />
       <EditModal
         isModalOpen={editModal}
-        // amount={editType === 'to' ? rate?.amount : amount}
-        amount={amount}
-        currency={rate?.to_currency}
-        setAmount={setAmount}
+        amount={editType === 'to' ? +receiptAmount : amount}
+        currency={currencyMap.get(rate?.to_currency)}
+        setAmount={editType === 'to' ? setReceiptAmount : setAmount}
         closeModal={() => setEditModal(false)}
       />
       <Footer

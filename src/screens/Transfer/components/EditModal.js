@@ -17,7 +17,7 @@ export default function EditModal({
     <BottomModal
       isModalOpen={isModalOpen}
       topline={false}
-      dismissable={false}
+      dismissable={true}
       showCloseIcon={false}
       closeModal={closeModal}
       containerStyle={{backgroundColor: '#fff', padding: scale(20), flex: 1}}>
@@ -31,7 +31,7 @@ export default function EditModal({
         <Text size="h1" color="#0E093F" style={{flex: 1}}>
           Edit send amount
         </Text>
-        <IconGen tag="check" color="#8960FF" size={1.5} onPress={closeModal} />
+        <IconGen tag="check" color="#8960FF" size={2.5} onPress={closeModal} />
       </View>
 
       <Funding

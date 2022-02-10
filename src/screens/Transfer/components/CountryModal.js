@@ -83,11 +83,11 @@ export default function CountryModal({
   return (
     <BottomModal
       isModalOpen={isModalOpen}
-      topLine={false}
+      topLine={true}
       showCloseIcon={false}
       closeModal={closeModal}
-      dismissable={false}
-      containerStyle={{backgroundColor: '#fff'}}>
+      dismissable={true}
+      containerStyle={{backgroundColor: '#fff', paddingTop: scale(10)}}>
       <View>
         <Input
           placeHolder="Search for currency"

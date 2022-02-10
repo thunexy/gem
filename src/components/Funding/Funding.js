@@ -7,7 +7,11 @@ import FundingText from './FundingText';
 export default function Funding({amount, setAmount, currency, textStyle = {}}) {
   return (
     <View style={{flex: 1, marginBottom: scale(40)}}>
-      <FundingText amount={amount} style={textStyle} currency={currency} />
+      <FundingText
+        amount={amount / 100}
+        style={textStyle}
+        currency={currency}
+      />
       <View
         style={{
           flexDirection: 'row',
@@ -46,7 +50,7 @@ export default function Funding({amount, setAmount, currency, textStyle = {}}) {
         />
         <TouchableOpacity
           onPress={() => {
-            setAmount(`${+amount}`.length < 9 ? +amount + '0' : amount);
+            setAmount(`${+amount}`.length < 9 ? +amount + '0' : `${amount}`);
           }}
           style={{
             width: '33.33%',
@@ -65,7 +69,7 @@ export default function Funding({amount, setAmount, currency, textStyle = {}}) {
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            setAmount(amount.substr(0, amount.length - 1));
+            setAmount(`${amount}`.substr(0, `${amount}`.length - 1));
           }}
           style={{
             width: '33.33%',

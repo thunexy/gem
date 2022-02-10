@@ -52,7 +52,7 @@ export default function TransferAmount({navigation}) {
               iconName="arrowRight"
               onPress={getRate}
               isLoading={loading}
-              disabled={amount < 1 || loading}
+              disabled={amount / 100 < 1 || loading}
             />
           </View>
         </View>
